@@ -7,7 +7,7 @@ import 'package:sports_matching/utils/logger.dart';
 
 final _routerDelegate = BeamerDelegate(
     guards: [BeamGuard(pathBlueprints: ['/'], check:(context, location){
-      return true;//이 값이 true이면 homepage로 false면 authpage로
+      return false;//이 값이 true이면 homepage로 false면 authpage로
     },
         showPage: BeamPage(child: AuthScreen())//fasle일 경우
     )],
