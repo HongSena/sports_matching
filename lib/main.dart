@@ -50,7 +50,11 @@ class sportsApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
+    return MaterialApp.router( //위젯의 top
+      theme: ThemeData(
+          primarySwatch: Colors.red,
+          fontFamily: 'DH' //글씨체
+      ),
       routeInformationParser: BeamerParser(), //비머에게 전달
       routerDelegate: _routerDelegate,
     );
