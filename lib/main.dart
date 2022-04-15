@@ -1,7 +1,7 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:sports_matching/router/locations.dart';
-import 'package:sports_matching/screens/auth_screen.dart';
+import 'package:sports_matching/screens/start_screen.dart';
 import 'package:sports_matching/screens/splash_screen.dart';
 import 'package:sports_matching/utils/logger.dart';
 
@@ -9,7 +9,7 @@ final _routerDelegate = BeamerDelegate(
     guards: [BeamGuard(pathBlueprints: ['/'], check:(context, location){
       return false;//이 값이 true이면 homepage로 false면 authpage로
     },
-        showPage: BeamPage(child: AuthScreen())//fasle일 경우
+        showPage: BeamPage(child: StartScreen())//fasle일 경우
     )],
     locationBuilder: BeamerLocationBuilder(beamLocations: [HomeLocation()])
 );
@@ -53,7 +53,10 @@ class sportsApp extends StatelessWidget {
     return MaterialApp.router( //위젯의 top
       theme: ThemeData(
           primarySwatch: Colors.red,
-          fontFamily: 'DH' //글씨체
+          fontFamily: 'DH', //글씨체
+        textTheme: TextTheme(
+          button: TextStyle(color: Colors.white)
+      ),appBarTheme: AppBarTheme(backgroundColor: Colors.white, elevation: 2, titleTextStyle: TextStyle(color: Colors.black87))
       ),
       routeInformationParser: BeamerParser(), //비머에게 전달
       routerDelegate: _routerDelegate,
