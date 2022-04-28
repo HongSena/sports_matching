@@ -1,8 +1,10 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sports_matching/router/locations.dart';
 import 'package:sports_matching/screens/start_screen.dart';
 import 'package:sports_matching/screens/splash_screen.dart';
+import 'package:sports_matching/states/user_provider.dart';
 import 'package:sports_matching/utils/logger.dart';
 
 final _routerDelegate = BeamerDelegate(
@@ -50,19 +52,24 @@ class sportsApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router( //위젯의 top
-      theme: ThemeData(
-          primarySwatch: Colors.red,
-          fontFamily: 'DH', //글씨체
-          hintColor: Colors.grey[350],
-          textTheme: TextTheme(
-          button: TextStyle(color: Colors.white)
-          ),
-          textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(backgroundColor: Colors.red, primary: Colors.white, minimumSize: Size(48, 48))),
-          appBarTheme: AppBarTheme(backgroundColor: Colors.white, elevation: 2, titleTextStyle: TextStyle(color: Colors.black87))
+    return ChangeNotifierProvider<UserProvider>(
+      create: (BuildContext context) {
+          return UserProvider();
+        },
+      child: MaterialApp.router( //위젯의 top
+        theme: ThemeData(
+            primarySwatch: Colors.red,
+            fontFamily: 'DH', //글씨체
+            hintColor: Colors.grey[350],
+            textTheme: TextTheme(
+            button: TextStyle(color: Colors.white)
+            ),
+            textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(backgroundColor: Colors.red, primary: Colors.white, minimumSize: Size(48, 48))),
+            appBarTheme: AppBarTheme(backgroundColor: Colors.white, elevation: 2, titleTextStyle: TextStyle(color: Colors.black87))
+        ),
+        routeInformationParser: BeamerParser(), //비머에게 전달
+        routerDelegate: _routerDelegate,
       ),
-      routeInformationParser: BeamerParser(), //비머에게 전달
-      routerDelegate: _routerDelegate,
     );
   }
 }

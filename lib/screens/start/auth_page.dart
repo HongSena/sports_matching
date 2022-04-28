@@ -33,12 +33,15 @@ class _AuthPageState extends State<AuthPage> {
           child: Form(
             key: _formKey,
             child: Scaffold(
+
               appBar: AppBar(
                 title: Text('전화번호 로그인', style: Theme.of(context).appBarTheme.titleTextStyle,),
                 elevation: 2,
               ),
+
               body: Padding(
                 padding: const EdgeInsets.all(common_padding),
+
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -49,7 +52,9 @@ class _AuthPageState extends State<AuthPage> {
                         Text('동글동글 멋진몸매에 빨간 옷을입고 \n새콤달콤 향기풍기는~ 멋쟁이 토마토')
                       ],
                     ),
+
                     SizedBox(height: common_padding),
+
                     TextFormField(
                       controller: _phoneNumberController,
                       keyboardType: TextInputType.phone,
@@ -65,7 +70,9 @@ class _AuthPageState extends State<AuthPage> {
                         }
                       }
                     ),
+
                     SizedBox(height: common_padding),
+
                     TextButton(onPressed: (){
                       if(_formKey.currentState != null){
                         bool passed = _formKey.currentState!.validate();
@@ -82,7 +89,9 @@ class _AuthPageState extends State<AuthPage> {
                         '인증문자 발송',
                       ),
                     ),
+
                     SizedBox(height: common_small_padding,),
+
                     AnimatedOpacity(
                       opacity: (_verificationStatus == VerificationStatus.none) ? 0 : 1,
                       duration: Duration(milliseconds: 300),
