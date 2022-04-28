@@ -8,7 +8,7 @@ class AdressPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      minimum: EdgeInsets.only(left: 16, right: 16), //전방향 패딩 16
+      minimum: EdgeInsets.only(left: 16, right: 16), //전방향 패딩
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

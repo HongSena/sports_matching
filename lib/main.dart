@@ -54,9 +54,11 @@ class sportsApp extends StatelessWidget {
       theme: ThemeData(
           primarySwatch: Colors.red,
           fontFamily: 'DH', //글씨체
-        textTheme: TextTheme(
+          hintColor: Colors.grey[350],
+          textTheme: TextTheme(
           button: TextStyle(color: Colors.white)
-      ),appBarTheme: AppBarTheme(backgroundColor: Colors.white, elevation: 2, titleTextStyle: TextStyle(color: Colors.black87))
+          ),
+          appBarTheme: AppBarTheme(backgroundColor: Colors.white, elevation: 2, titleTextStyle: TextStyle(color: Colors.black87))
       ),
       routeInformationParser: BeamerParser(), //비머에게 전달
       routerDelegate: _routerDelegate,
