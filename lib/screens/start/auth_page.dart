@@ -1,6 +1,8 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
+import 'package:provider/provider.dart';
+import 'package:sports_matching/states/user_provider.dart';
 import '../../constants/common_size.dart';
 import '../../utils/logger.dart';
 
@@ -154,17 +156,19 @@ class _AuthPageState extends State<AuthPage> {
         return 48 + common_small_padding;
     }
   }
-
+//인증 버튼 눌렀을 때
   void attemptVerify() async {
     setState(() {
       _verificationStatus = VerificationStatus.verifying;
     });
 
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 1));
 
     setState(() {
       _verificationStatus = VerificationStatus.verifivationdone;
     });
+    
+    context.read<UserProvider>().setUserAuth(true);
 
   }
 }

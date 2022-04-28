@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sports_matching/screens/start/address_service.dart';
 import 'package:sports_matching/utils/logger.dart';
 
 class AdressPage extends StatelessWidget {
-  const AdressPage({Key? key}) : super(key: key);
+  AdressPage({Key? key}) : super(key: key);
+
+  TextEditingController _addressController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +16,7 @@ class AdressPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
         TextFormField(
+          controller: _addressController,
           decoration: InputDecoration(
               prefixIcon: Icon(Icons.search, color: Colors.grey,),
           hintText: '도로명주소를 입력해주세요',
@@ -22,7 +26,10 @@ class AdressPage extends StatelessWidget {
           ),
         ),
         TextButton.icon(onPressed: (){
-          logger.d('adressPage button clicked!');
+          final text = _addressController.text;
+          if(text.isNotEmpty){
+            AddressService().searchAddresBystr(text);
+          }
         },
             icon:Icon(
               CupertinoIcons.compass,
