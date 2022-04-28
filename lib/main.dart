@@ -58,6 +58,7 @@ class sportsApp extends StatelessWidget {
           textTheme: TextTheme(
           button: TextStyle(color: Colors.white)
           ),
+          textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(backgroundColor: Colors.red, primary: Colors.white, minimumSize: Size(48, 48))),
           appBarTheme: AppBarTheme(backgroundColor: Colors.white, elevation: 2, titleTextStyle: TextStyle(color: Colors.black87))
       ),
       routeInformationParser: BeamerParser(), //비머에게 전달

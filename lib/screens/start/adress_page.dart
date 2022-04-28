@@ -31,11 +31,9 @@ class AdressPage extends StatelessWidget {
             ),
             label: Text(
           '현재 위치 찾기',
-          style: TextStyle(color: Colors.white),
 
         ),
-            style: TextButton.styleFrom(backgroundColor: Colors.red,
-            minimumSize: Size(10, 48)),
+            style: TextButton.styleFrom(minimumSize: Size(10, 48)),
         ),
         Expanded(
           child: ListView.builder(
