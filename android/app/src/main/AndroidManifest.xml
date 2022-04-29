@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sports_matching.capstone.sports_matching">
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
    <application
         android:label="sports_matching"
         android:name="${applicationName}"
