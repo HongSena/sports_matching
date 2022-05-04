@@ -2,7 +2,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sports_matching/screens/home/items_page.dart';
 import 'package:sports_matching/states/user_provider.dart';
+import 'package:sports_matching/screens/home/items_page.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -18,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: IndexedStack(
         index: _bottomSelectedIndex,
-        children: [Container(color: Colors.accents[0]),Container(color: Colors.accents[3]),Container(color: Colors.accents[6]),Container(color: Colors.accents[9])],
+        children: [ItemsPage() ,Container(color: Colors.accents[3]),Container(color: Colors.accents[6]),Container(color: Colors.accents[9])],
       ),
       appBar: AppBar(
         centerTitle: false,

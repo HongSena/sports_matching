@@ -63,7 +63,9 @@ class sportsApp extends StatelessWidget {
             fontFamily: 'DH', //글씨체
             hintColor: Colors.grey[350],
             textTheme: TextTheme(
-            button: TextStyle(color: Colors.white)
+              button: TextStyle(color: Colors.white),
+              subtitle1: TextStyle(color: Colors.black87, fontSize: 15),
+              subtitle2: TextStyle(color: Colors.grey, fontSize: 13)
             ),
             textButtonTheme: TextButtonThemeData(
                 style: TextButton.styleFrom(
