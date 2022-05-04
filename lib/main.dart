@@ -75,7 +75,9 @@ class sportsApp extends StatelessWidget {
             //     elevation: 2,
             //     titleTextStyle: TextStyle(color: Colors.black, fontSize: 20.0),
             //     actionsIconTheme: IconThemeData(color: Colors.black87))
-                ),
+                bottomNavigationBarTheme: BottomNavigationBarThemeData(
+                  selectedItemColor: Colors.red, unselectedItemColor: Colors.black54
+                )),
         routeInformationParser: BeamerParser(), //비머에게 전달
         routerDelegate: _routerDelegate,
       ),
