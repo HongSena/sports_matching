@@ -2,6 +2,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sports_matching/states/user_provider.dart';
 import '../../constants/common_size.dart';
 import '../../utils/logger.dart';
@@ -86,6 +87,8 @@ class _AuthPageState extends State<AuthPage> {
                         }
                       }
                       logger.d('auth_page 인증문자 받기 button clicked!');
+
+
                     },
                       child: Text(
                         '인증문자 발송',
@@ -170,6 +173,12 @@ class _AuthPageState extends State<AuthPage> {
     
     context.read<UserProvider>().setUserAuth(true);
 
+  }
+
+  _getAdress() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String address = prefs.getString('address')??"";
+    logger.d("address from shared pref = $address");
   }
 }
 

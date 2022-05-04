@@ -5,8 +5,7 @@ import '../../states/user_provider.dart';
 import '../../utils/logger.dart';
 
 class IntroPage extends StatelessWidget {
-  PageController controller;
-  IntroPage(this.controller, {Key? key}) : super(key: key);
+  IntroPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +34,7 @@ class IntroPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     TextButton(onPressed:(){
-                      controller.animateToPage(1, duration: Duration(milliseconds: 500), curve: Curves.ease);
+                      context.read<PageController>().animateToPage(1, duration: Duration(milliseconds: 500), curve: Curves.ease);
 
                       logger.d('intro page button clicked');
                     },

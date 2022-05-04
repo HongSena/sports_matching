@@ -19,6 +19,7 @@ final _routerDelegate = BeamerDelegate(
 
 void main() {
   logger.d('my first log');
+  Provider.debugCheckInvalidValueType = null;
   runApp(MyApp());
 }
 
@@ -64,9 +65,17 @@ class sportsApp extends StatelessWidget {
             textTheme: TextTheme(
             button: TextStyle(color: Colors.white)
             ),
-            textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(backgroundColor: Colors.red, primary: Colors.white, minimumSize: Size(48, 48))),
-            appBarTheme: AppBarTheme(backgroundColor: Colors.white, elevation: 2, titleTextStyle: TextStyle(color: Colors.black87), actionsIconTheme: IconThemeData(color: Colors.black87))
-        ),
+            textButtonTheme: TextButtonThemeData(
+                style: TextButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    primary: Colors.white,
+                    minimumSize: Size(48, 48))),
+            // appBarTheme: AppBarTheme(
+            //     backgroundColor: Colors.white,
+            //     elevation: 2,
+            //     titleTextStyle: TextStyle(color: Colors.black, fontSize: 20.0),
+            //     actionsIconTheme: IconThemeData(color: Colors.black87))
+                ),
         routeInformationParser: BeamerParser(), //비머에게 전달
         routerDelegate: _routerDelegate,
       ),
