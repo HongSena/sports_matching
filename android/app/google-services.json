@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "574045807045",
+    "project_id": "sport-matching-ae539",
+    "storage_bucket": "sport-matching-ae539.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:574045807045:android:6064de98a3e1fc09b7abac",
+        "android_client_info": {
+          "package_name": "com.sports_matching.capstone.sports_matching"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "574045807045-a69p53dvff5u8nkuvdkfe88s3l16bpsd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sports_matching.capstone.sports_matching",
+            "certificate_hash": "22a20240f5f539524e1ce20135b86b6f7187c466"
+          }
+        },
+        {
+          "client_id": "574045807045-f0q0igqhd9c8u6l9smcbd1oph447rlaa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAree1lJKI3ndtydkP00361sne2iTx7XmE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "574045807045-f0q0igqhd9c8u6l9smcbd1oph447rlaa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
