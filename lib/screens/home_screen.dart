@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: false,
         title: Text('잠원동'),
         actions: [
-          IconButton(onPressed: (){}, icon: Icon(CupertinoIcons.nosign)),
+          IconButton(onPressed: (){context.read<UserProvider>().setUserAuth(false);}, icon: Icon(CupertinoIcons.nosign)),
           IconButton(onPressed: (){}, icon: Icon(CupertinoIcons.search)),
           IconButton(onPressed: (){}, icon: Icon(CupertinoIcons.text_justify))
         ],

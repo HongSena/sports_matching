@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:sports_matching/router/locations.dart';
 import 'package:sports_matching/screens/start_screen.dart';
 import 'package:sports_matching/screens/splash_screen.dart';
+import 'package:sports_matching/states/firebase_auth_state.dart';
 import 'package:sports_matching/states/user_provider.dart';
 import 'package:sports_matching/utils/logger.dart';
 
@@ -22,7 +23,10 @@ void main() {
   logger.d('my first log');
   Provider.debugCheckInvalidValueType = null;
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MyApp());
+  runApp(
+    MultiProvider( providers: [ Provider( create: (context) => FirebaseAuthState(), ) ], child: MyApp(), )
+      //MyApp()
+  );
 }
 
 
