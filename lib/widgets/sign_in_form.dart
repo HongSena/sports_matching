@@ -72,8 +72,7 @@ class _SignInFormState extends State<SignInForm> {
                 onPressed: () {
                   if(_formkey.currentState!.validate()){
                     logger.d('Validation success');
-                    //attemptVerify(context);
-                    Provider.of<FirebaseAuthState>(context, listen: false).login(_emailContriller.text, _pwContriller.text);
+                    Provider.of<FirebaseAuthState>(context, listen: false).login(context, _emailContriller.text, _pwContriller.text);
                   }
                 },
                 child: Text('Sign in', style: TextStyle(color: Colors.white),),

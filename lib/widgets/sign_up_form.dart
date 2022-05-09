@@ -85,8 +85,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 onPressed: () {
                   if(_formkey.currentState!.validate()){
                     logger.d('Validation success');
-                    Provider.of<FirebaseAuthState>(context, listen: false).registerUser(_emailContriller.text, _pwContriller.text);
-                    attemptVerify(context);
+                    Provider.of<FirebaseAuthState>(context, listen: false).registerUser(context, _emailContriller.text, _pwContriller.text);
                   }
                 },
                 child: Text('join', style: TextStyle(color: Colors.white),),
