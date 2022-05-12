@@ -19,11 +19,11 @@ final _routerDelegate = BeamerDelegate(
 );
 
 
-Future<void> main() async{
+void main(){
   logger.d('my first log');
   Provider.debugCheckInvalidValueType = null;
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+
   runApp(
     MultiProvider( providers: [ Provider( create: (context) => FirebaseAuthState(), ) ], child: MyApp(), )
       //MyApp()

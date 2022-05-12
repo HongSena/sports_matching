@@ -2,6 +2,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sports_matching/constants/common_size.dart';
+import 'package:sports_matching/repo/user_service.dart';
 
 class ItemsPage extends StatelessWidget {
   const ItemsPage({Key? key}) : super(key: key);
@@ -23,29 +24,34 @@ class ItemsPage extends StatelessWidget {
             );
           },
           itemBuilder: (context, index) {
-            return SizedBox(height: imgSize, child: Row(
-              children: [
-                SizedBox(height: imgSize, width: imgSize, child: ExtendedImage.asset('assets/imgs/ronnie.png', shape: BoxShape.rectangle ,borderRadius: BorderRadius.circular(12),)),
-                SizedBox(width: common_small_padding,),
-                Expanded(child: Column( crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('work', style: Theme.of(context).textTheme.subtitle1),
-                    Text('53일 전', style: Theme.of(context).textTheme.subtitle2),
-                    Text('5000원'),
-                    Expanded(child: Container()),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Icon(CupertinoIcons.chat_bubble_2, color: Colors.grey[500], size: 17),
-                        Text('23', style: TextStyle( color: Colors.grey[500], fontSize: 13)),
-                        Icon(CupertinoIcons.heart, color: Colors.grey[500], size: 17),
-                        Text('30', style: TextStyle( color: Colors.grey[500], fontSize: 13),)
-                      ],
-                    )
-                  ],
-                ))
-              ],
-            ),);}, itemCount: 10,);
+            return InkWell(
+              onTap: (){
+                UserService().firestoreReadTest();
+              },
+              child: SizedBox(height: imgSize, child: Row(
+                children: [
+                  SizedBox(height: imgSize, width: imgSize, child: ExtendedImage.asset('assets/imgs/ronnie.png', shape: BoxShape.rectangle ,borderRadius: BorderRadius.circular(12),)),
+                  SizedBox(width: common_small_padding,),
+                  Expanded(child: Column( crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('work', style: Theme.of(context).textTheme.subtitle1),
+                      Text('53일 전', style: Theme.of(context).textTheme.subtitle2),
+                      Text('5000원'),
+                      Expanded(child: Container()),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Icon(CupertinoIcons.chat_bubble_2, color: Colors.grey[500], size: 17),
+                          Text('23', style: TextStyle( color: Colors.grey[500], fontSize: 13)),
+                          Icon(CupertinoIcons.heart, color: Colors.grey[500], size: 17),
+                          Text('30', style: TextStyle( color: Colors.grey[500], fontSize: 13),)
+                        ],
+                      )
+                    ],
+                  ))
+                ],
+              ),),
+            );}, itemCount: 10,);
       }
     );
   }
