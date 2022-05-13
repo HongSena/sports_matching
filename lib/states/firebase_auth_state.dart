@@ -42,6 +42,7 @@ class FirebaseAuthState extends ChangeNotifier {
       Scaffold.of(context).showSnackBar(snackBar);
     });
     if(user!=null){
+      UserProvider().initUser();
       SnackBar snackBar = SnackBar(content: Text("회원가입이 완료되었습니다."));
       Scaffold.of(context).showSnackBar(snackBar);
     }

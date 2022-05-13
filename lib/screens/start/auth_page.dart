@@ -1,6 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sports_matching/widgets/sign_in_form.dart';
+import '../../constants/shared_pref_keys.dart';
+import '../../utils/logger.dart';
 import '../../widgets/sign_up_form.dart';
 
 class AuthPage extends StatefulWidget {
@@ -44,5 +47,12 @@ class _AuthPageState extends State<AuthPage>{
         ),
       ),
     );
+  }
+  _getAddress() async{
+    SharedPreferences prefs = await  SharedPreferences.getInstance();
+    String address = prefs.getString(SHARED_ADDRESS) ?? "";
+    double lat = prefs.getDouble(SHARED_LAT) ?? 0;
+    double lon = prefs.getDouble(SHARED_LON) ?? 0;
+    logger.d("Address from shared pref - $address");
   }
 }
