@@ -1,10 +1,13 @@
 
+import 'package:beamer/beamer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sports_matching/screens/home/items_page.dart';
 import 'package:sports_matching/states/user_provider.dart';
 import 'package:sports_matching/screens/home/items_page.dart';
+
+import '../widgets/expandable_fab.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -22,6 +25,34 @@ class _HomeScreenState extends State<HomeScreen> {
       body: IndexedStack(
         index: _bottomSelectedIndex,
         children: [ItemsPage() ,Container(color: Colors.accents[3]),Container(color: Colors.accents[6]),Container(color: Colors.accents[9])],
+      ),
+      floatingActionButton: ExpandableFab(
+        distance: 90,
+        children: [
+          MaterialButton(
+            onPressed:(){
+              context.beamToNamed('/input');
+            },
+            shape: CircleBorder(),
+            height: 56,
+            color: Theme.of(context).colorScheme.primary,
+            child: Icon(Icons.add),
+          ),
+          MaterialButton(
+            onPressed:(){},
+            shape: CircleBorder(),
+            height: 56,
+            color: Theme.of(context).colorScheme.primary,
+            child: Icon(Icons.add),
+          ),
+          MaterialButton(
+            onPressed:(){},
+            shape: CircleBorder(),
+            height: 56,
+            color: Theme.of(context).colorScheme.primary,
+            child: Icon(Icons.add),
+          ),
+        ],
       ),
       appBar: AppBar(
         centerTitle: false,

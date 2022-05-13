@@ -15,7 +15,7 @@ final _routerDelegate = BeamerDelegate(
     },
         showPage: BeamPage(child: StartScreen())//fasle일 경우
     )],
-    locationBuilder: BeamerLocationBuilder(beamLocations: [HomeLocation()])
+    locationBuilder: BeamerLocationBuilder(beamLocations: [HomeLocation(), InputLocation()])
 );
 
 
