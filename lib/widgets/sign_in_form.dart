@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sports_matching/states/firebase_auth_state.dart';
-import 'package:sports_matching/states/user_provider.dart';
+import 'package:sports_matching/states/user_notifier.dart';
 import 'package:sports_matching/widgets/sign_up_form.dart';
 import '../screens/home_screen.dart';
 import '../utils/logger.dart';

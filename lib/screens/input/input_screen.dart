@@ -2,8 +2,11 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:beamer/beamer.dart';
 import 'package:sports_matching/constants/common_size.dart';
-
+import 'package:provider/provider.dart';
+import 'package:sports_matching/states/category_notifier.dart';
 import 'multi_image_select.dart';
+
+
 class InputScreen extends StatefulWidget {
   const InputScreen({Key? key}) : super(key: key);
 
@@ -40,7 +43,11 @@ class _InputScreenState extends State<InputScreen> {
             _divider,
             TextFormField(decoration: InputDecoration(hintText: '글 제목', contentPadding: EdgeInsets.symmetric(horizontal: common_padding),focusedBorder:_border,enabledBorder: _border)),
             _divider,
-            ListTile(dense:true, title: Text('종목 선택'), trailing: Icon(Icons.navigate_next),),
+            ListTile(onTap: (){
+              context.beamToNamed('/input/category_input');
+            },
+              dense:true,
+              title: Text(context.watch<CategoryNotifier>().currentCategoryInKor), trailing: Icon(Icons.navigate_next),),
             _divider,
             Row(children: [
               Expanded(child: Padding(

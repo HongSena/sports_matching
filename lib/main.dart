@@ -6,12 +6,12 @@ import 'package:sports_matching/router/locations.dart';
 import 'package:sports_matching/screens/start_screen.dart';
 import 'package:sports_matching/screens/splash_screen.dart';
 import 'package:sports_matching/states/firebase_auth_state.dart';
-import 'package:sports_matching/states/user_provider.dart';
+import 'package:sports_matching/states/user_notifier.dart';
 import 'package:sports_matching/utils/logger.dart';
 
 final _routerDelegate = BeamerDelegate(
     guards: [BeamGuard(pathBlueprints: ['/'], check:(context, location){
-      return context.watch<UserProvider>().userState;  //이 값이 true이면 homepage로 false면 authpage로
+      return context.watch<UserNotifier>().userState;  //이 값이 true이면 homepage로 false면 authpage로
     },
         showPage: BeamPage(child: StartScreen())//fasle일 경우
     )],
@@ -67,9 +67,9 @@ class sportsApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<UserProvider>(
+    return ChangeNotifierProvider<UserNotifier>(
       create: (BuildContext context) {
-          return UserProvider();
+          return UserNotifier();
         },
       child: MaterialApp.router( //위젯의 top
         theme: ThemeData(

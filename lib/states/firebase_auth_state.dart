@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sports_matching/states/user_provider.dart';
+import 'package:sports_matching/states/user_notifier.dart';
 class FirebaseAuthState extends ChangeNotifier {
   FirebaseAuthStatus _firebaseAuthStatus = FirebaseAuthStatus.signout;
   User? _firebaseUser = null;
@@ -42,7 +42,7 @@ class FirebaseAuthState extends ChangeNotifier {
       Scaffold.of(context).showSnackBar(snackBar);
     });
     if(user!=null){
-      UserProvider().initUser();
+      UserNotifier().initUser();
       SnackBar snackBar = SnackBar(content: Text("회원가입이 완료되었습니다."));
       Scaffold.of(context).showSnackBar(snackBar);
     }
@@ -72,7 +72,7 @@ class FirebaseAuthState extends ChangeNotifier {
     });
 
 
-    if(user!=null){Provider.of<UserProvider>(context, listen: false).setUserAuth(true);}
+    if(user!=null){Provider.of<UserNotifier>(context, listen: false).setUserAuth(true);}
   }
   void changeFirebaseAuthStatus([FirebaseAuthStatus? firebaseAuthStatus]){
     if(firebaseAuthStatus != null){
@@ -80,10 +80,10 @@ class FirebaseAuthState extends ChangeNotifier {
     }else{
       if(_firebaseUser != null){
         _firebaseAuthStatus =FirebaseAuthStatus.signin;
-        UserProvider().setUserAuth(true);
+        UserNotifier().setUserAuth(true);
       }else{
         _firebaseAuthStatus =FirebaseAuthStatus.signout;
-        UserProvider().setUserAuth(false);
+        UserNotifier().setUserAuth(false);
       }
     }
   }

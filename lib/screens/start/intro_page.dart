@@ -1,7 +1,7 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../states/user_provider.dart';
+import '../../states/user_notifier.dart';
 import '../../utils/logger.dart';
 
 class IntroPage extends StatelessWidget {
@@ -9,7 +9,7 @@ class IntroPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    logger.d('현재 유저 상태 ${context.read<UserProvider>().userState}');
+    logger.d('현재 유저 상태 ${context.read<UserNotifier>().userState}');
     return LayoutBuilder(
       builder: (context, constraints){
         Size size = MediaQuery.of(context).size; //디바이스의 사이즈를 가지고 온다. width height

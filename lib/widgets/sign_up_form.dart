@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sports_matching/states/firebase_auth_state.dart';
-import 'package:sports_matching/states/user_provider.dart';
+import 'package:sports_matching/states/user_notifier.dart';
 import '../screens/home_screen.dart';
 import '../utils/logger.dart';
 import 'package:provider/provider.dart';
@@ -110,5 +110,5 @@ InputDecoration textInputDecor(String hint) {
       fillColor: Colors.grey[100]);
 }
 void attemptVerify(BuildContext context)async{
-  context.read<UserProvider>().setUserAuth(true);
+  context.read<UserNotifier>().setUserAuth(true);
 }

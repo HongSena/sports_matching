@@ -7,7 +7,7 @@ import '../constants/shared_pref_keys.dart';
 import '../data/user_model.dart';
 import '../utils/logger.dart';
 //유저가 로그인이 되었는가?
-class UserProvider extends ChangeNotifier{
+class UserNotifier extends ChangeNotifier{
   bool _userLoggedIn = true;
 
   void setUserAuth(bool authState){
