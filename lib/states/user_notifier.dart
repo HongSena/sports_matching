@@ -8,7 +8,7 @@ import '../data/user_model.dart';
 import '../utils/logger.dart';
 //유저가 로그인이 되었는가?
 class UserNotifier extends ChangeNotifier{
-  bool _userLoggedIn = true;
+  bool _userLoggedIn = false;
 
   void setUserAuth(bool authState){
     _userLoggedIn = authState;

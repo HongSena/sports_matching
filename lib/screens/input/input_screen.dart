@@ -1,9 +1,15 @@
+import 'dart:typed_data';
+
 import 'package:extended_image/extended_image.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:beamer/beamer.dart';
 import 'package:sports_matching/constants/common_size.dart';
 import 'package:provider/provider.dart';
+import 'package:sports_matching/data/item_model.dart';
 import 'package:sports_matching/states/category_notifier.dart';
+import 'package:sports_matching/states/select_image_notifier.dart';
+import '../../utils/logger.dart';
 import 'multi_image_select.dart';
 
 
@@ -30,8 +36,15 @@ class _InputScreenState extends State<InputScreen> {
           ),
           title: Text('파티생성 페이지'),
           actions: [
-            TextButton(onPressed:(){
-              context.beamBack();
+            TextButton(onPressed:() async {
+              List<Uint8List> images = context.read<SelectImageNotifier>().images;
+              var metaData = SettableMetadata(contentType: 'image/jpeg');
+              Reference ref = FirebaseStorage.instance.ref('images/testing/testing-image.jpg_2');
+              if(images.isNotEmpty)
+                await ref.putData(images[0], metaData);
+              String link = await ref.getDownloadURL();
+              logger.d('img upload finished - $link');
+              //ItemModel itemModel = ItemModel(itemKey: itemKey, userKey: userKey, imageDownloadurls: imageDownloadurls, title: title, category: category, requiredLevel: requiredLevel, requiredLevelSet: requiredLevelSet, detail: detail, address: address, geoFirePoint: geoFirePoint, createdDate: createdDate)
             },
               child: Text('완료', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300)),
             ),
