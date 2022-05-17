@@ -1,5 +1,6 @@
 import 'dart:typed_data';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sports_matching/repo/image_storage.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +8,10 @@ import 'package:beamer/beamer.dart';
 import 'package:sports_matching/constants/common_size.dart';
 import 'package:provider/provider.dart';
 import 'package:sports_matching/data/item_model.dart';
+import 'package:sports_matching/repo/item_service.dart';
 import 'package:sports_matching/states/category_notifier.dart';
 import 'package:sports_matching/states/select_image_notifier.dart';
+import 'package:sports_matching/states/user_notifier.dart';
 import '../../utils/logger.dart';
 import 'multi_image_select.dart';
 
@@ -25,57 +28,106 @@ class _InputScreenState extends State<InputScreen> {
   bool _levelLimitSelected = false;
   var _border = UnderlineInputBorder(borderSide: BorderSide(color: Colors.transparent));
   TextEditingController _levelController = TextEditingController();
+  bool isCreatingItem = false;
+  TextEditingController _titleController = TextEditingController();
+  TextEditingController _detailController = TextEditingController();
+
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          leading: TextButton(onPressed:(){
-            context.beamBack();
-          },
-            child: Text('뒤로', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300)),
-          ),
-          title: Text('파티생성 페이지'),
-          actions: [
-            TextButton(onPressed:() async {
-              List<Uint8List> images = context.read<SelectImageNotifier>().images;
-              var metaData = SettableMetadata(contentType: 'image/jpeg');
-              Reference ref = FirebaseStorage.instance.ref('images/testing/testing-image.jpg_2');
-              if(images.isNotEmpty)
-                await ref.putData(images[0], metaData);
-              String link = await ref.getDownloadURL();
-              logger.d('img upload finished - $link');
-              //ItemModel itemModel = ItemModel(itemKey: itemKey, userKey: userKey, imageDownloadurls: imageDownloadurls, title: title, category: category, requiredLevel: requiredLevel, requiredLevelSet: requiredLevelSet, detail: detail, address: address, geoFirePoint: geoFirePoint, createdDate: createdDate)
-            },
-              child: Text('완료', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300)),
-            ),
-          ],
-        ),
-        body: ListView(
-          children: [
-            MultiImageSelect(),
-            _divider,
-            TextFormField(decoration: InputDecoration(hintText: '글 제목', contentPadding: EdgeInsets.symmetric(horizontal: common_padding),focusedBorder:_border,enabledBorder: _border)),
-            _divider,
-            ListTile(onTap: (){
-              context.beamToNamed('/input/category_input');
-            },
-              dense:true,
-              title: Text(context.watch<CategoryNotifier>().currentCategoryInKor), trailing: Icon(Icons.navigate_next),),
-            _divider,
-            Row(children: [
-              Expanded(child: Padding(
-                padding: const EdgeInsets.only(left: common_padding),
-                child: TextFormField(keyboardType: TextInputType.number, controller: _levelController, decoration: InputDecoration(hintText: '요구 헬창력을 설정하세요', icon: Icon(Icons.sports_tennis_sharp, color: (_levelController.text.isEmpty)?Colors.grey:Colors.black87),focusedBorder: _border, enabledBorder: _border),),
-              )),
-              TextButton.icon(onPressed: (){setState(() {
-                _levelLimitSelected = !_levelLimitSelected;
-              });}, icon: Icon(_levelLimitSelected?Icons.check_circle:Icons.check_circle_outline, color: _levelLimitSelected?Theme.of(context).primaryColor:Colors.black54),label: Text('설정하기', style: TextStyle(color: _levelLimitSelected?Theme.of(context).primaryColor:Colors.black54),), style: TextButton.styleFrom(backgroundColor: Colors.transparent, primary: Colors.grey))],),
-            _divider,
-            TextFormField(maxLines: null,keyboardType: TextInputType.multiline,decoration: InputDecoration(hintText: '게시글 내용', contentPadding: EdgeInsets.symmetric(horizontal: common_padding),focusedBorder: _border,enabledBorder: _border)),
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        Size _size = MediaQuery.of(context).size;
+        return IgnorePointer(
+          ignoring: isCreatingItem,
+          child: Scaffold(
+              appBar: AppBar(
+                leading: TextButton(onPressed:(){
+                  context.beamBack();
+                },
+                  child: Text('뒤로', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300)),
+                ),
+                bottom: PreferredSize(preferredSize: Size( _size.width, 2), child: isCreatingItem?LinearProgressIndicator(minHeight: 2,):Container()),
+                title: Text('파티생성 페이지'),
+                actions: [
+                  TextButton(onPressed: attemptCreateItem,
+                    child: Text('완료', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300)),
+                  ),
+                ],
+              ),
+              body: ListView(
+                children: [
+                  MultiImageSelect(),
 
-          ],
-        )
+                  _divider,
+
+                  TextFormField(
+                      controller: _titleController,
+                      decoration: InputDecoration(
+                          hintText: '글 제목',
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: common_padding
+                          ),
+                          focusedBorder:_border,enabledBorder: _border
+                      )
+                  ),
+
+                  _divider,
+                  ListTile(onTap: (){
+                    context.beamToNamed('/input/category_input');
+                  },
+                    dense:true,
+                    title: Text(context.watch<CategoryNotifier>().currentCategoryInKor), trailing: Icon(Icons.navigate_next),),
+                  _divider,
+                  Row(children: [
+                    Expanded(child: Padding(
+                      padding: const EdgeInsets.only(left: common_padding),
+                      child: TextFormField(keyboardType: TextInputType.number, controller: _levelController, decoration: InputDecoration(hintText: '요구 헬창력을 설정하세요', icon: Icon(Icons.sports_tennis_sharp, color: (_levelController.text.isEmpty)?Colors.grey:Colors.black87),focusedBorder: _border, enabledBorder: _border),),
+                    )),
+                    TextButton.icon(onPressed: (){setState(() {
+                      _levelLimitSelected = !_levelLimitSelected;
+                    });}, icon: Icon(_levelLimitSelected?Icons.check_circle:Icons.check_circle_outline, color: _levelLimitSelected?Theme.of(context).primaryColor:Colors.black54),label: Text('설정하기', style: TextStyle(color: _levelLimitSelected?Theme.of(context).primaryColor:Colors.black54),), style: TextButton.styleFrom(backgroundColor: Colors.transparent, primary: Colors.grey))],),
+                  _divider,
+                  TextFormField(maxLines: null,keyboardType: TextInputType.multiline,decoration: InputDecoration(hintText: '게시글 내용', contentPadding: EdgeInsets.symmetric(horizontal: common_padding),focusedBorder: _border,enabledBorder: _border)),
+
+                ],
+              )
+          ),
+        );
+      },
     );
+  }
+
+  void attemptCreateItem() async {
+    if(FirebaseAuth.instance.currentUser == null) return;
+    isCreatingItem = true;
+    setState(() {});
+    final String userKey = FirebaseAuth.instance.currentUser!.uid;
+    final String itemKey = ItemModel.generateItemKey(userKey);
+    UserNotifier userNotifier = context.read<UserNotifier>();
+    List<Uint8List> images = context.read<SelectImageNotifier>().images;
+    if(userNotifier.userModel == null) return;
+    List<String> downloadUrls = await ImageStorage.uploadImage(images, itemKey);
+    logger.d('img upload finished - ${downloadUrls.toString()}');
+    ItemModel itemModel = ItemModel(
+      itemKey: itemKey,
+      userKey: userKey,
+      imageDownloadurls: downloadUrls,
+      title: _titleController.text,
+      category: context.read<CategoryNotifier>().currentCategoryInEng,
+      requiredLevel: _levelController.text,
+      requiredLevelSet: _levelLimitSelected,
+      detail: _detailController.text,
+      address: userNotifier.userModel!.address,
+      geoFirePoint: userNotifier.userModel!.geoFirePoint,
+      createdDate: DateTime.now().toUtc(),
+    );
+    logger.d('img upload finished - ${downloadUrls.toString()}');
+
+    await ItemService().createNewItem(itemModel.toJson(), itemKey);
+
+    isCreatingItem = false;
+    setState(() {});
   }
 }
 

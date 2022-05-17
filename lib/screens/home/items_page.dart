@@ -26,7 +26,7 @@ class ItemsPage extends StatelessWidget {
           itemBuilder: (context, index) {
             return InkWell(
               onTap: (){
-                UserService().firestoreReadTest();
+
               },
               child: SizedBox(height: imgSize, child: Row(
                 children: [

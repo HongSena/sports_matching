@@ -71,8 +71,10 @@ class FirebaseAuthState extends ChangeNotifier {
       Scaffold.of(context).showSnackBar(snackBar);
     });
 
-
-    if(user!=null){Provider.of<UserNotifier>(context, listen: false).setUserAuth(true);}
+    if(user!=null){
+      Provider.of<UserNotifier>(context, listen: false).initUser();
+      Provider.of<UserNotifier>(context, listen: false).setUserAuth(true);
+    }
   }
   void changeFirebaseAuthStatus([FirebaseAuthStatus? firebaseAuthStatus]){
     if(firebaseAuthStatus != null){

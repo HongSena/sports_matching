@@ -8,7 +8,9 @@ class SelectImageNotifier extends ChangeNotifier{
   Future setNewImages(List<XFile>? newImages)async{
     if(newImages!=null && newImages.isNotEmpty){
       _images.clear();
-      newImages.forEach((xfile) async{ _images.add(await xfile.readAsBytes());});
+      for(int i = 0; i < newImages.length; i++){
+        _images.add(await newImages[i].readAsBytes());
+      }
       notifyListeners();
     }
   }

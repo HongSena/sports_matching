@@ -9,13 +9,13 @@ import '../utils/logger.dart';
 //유저가 로그인이 되었는가?
 class UserNotifier extends ChangeNotifier{
   bool _userLoggedIn = false;
+  User? _user;
+  UserModel? _userModel;
 
   void setUserAuth(bool authState){
     _userLoggedIn = authState;
     notifyListeners();
   }
-  User? _user;
-  UserModel? _userModel;
   void initUser(){
     FirebaseAuth.instance.authStateChanges().listen((user) async{
       // _user = user;
@@ -51,4 +51,5 @@ class UserNotifier extends ChangeNotifier{
   bool get userState{
     return _userLoggedIn;
   }
+  UserModel? get userModel => _userModel;
 }
