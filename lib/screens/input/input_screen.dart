@@ -43,7 +43,7 @@ class _InputScreenState extends State<InputScreen> {
           child: Scaffold(
               appBar: AppBar(
                 leading: TextButton(onPressed:(){
-                  context.beamBack();
+                  context.beamToNamed('/');
                 },
                   child: Text('뒤로', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300)),
                 ),
@@ -88,7 +88,7 @@ class _InputScreenState extends State<InputScreen> {
                       _levelLimitSelected = !_levelLimitSelected;
                     });}, icon: Icon(_levelLimitSelected?Icons.check_circle:Icons.check_circle_outline, color: _levelLimitSelected?Theme.of(context).primaryColor:Colors.black54),label: Text('설정하기', style: TextStyle(color: _levelLimitSelected?Theme.of(context).primaryColor:Colors.black54),), style: TextButton.styleFrom(backgroundColor: Colors.transparent, primary: Colors.grey))],),
                   _divider,
-                  TextFormField(maxLines: null,keyboardType: TextInputType.multiline,decoration: InputDecoration(hintText: '게시글 내용', contentPadding: EdgeInsets.symmetric(horizontal: common_padding),focusedBorder: _border,enabledBorder: _border)),
+                  TextFormField(controller: _detailController, maxLines: null,keyboardType: TextInputType.multiline,decoration: InputDecoration(hintText: '게시글 내용', contentPadding: EdgeInsets.symmetric(horizontal: common_padding),focusedBorder: _border,enabledBorder: _border)),
 
                 ],
               )
@@ -127,7 +127,7 @@ class _InputScreenState extends State<InputScreen> {
     await ItemService().createNewItem(itemModel.toJson(), itemKey);
 
     isCreatingItem = false;
-    setState(() {});
+    context.beamBack();
   }
 }
 

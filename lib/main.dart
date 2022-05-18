@@ -10,12 +10,13 @@ import 'package:sports_matching/states/user_notifier.dart';
 import 'package:sports_matching/utils/logger.dart';
 
 final _routerDelegate = BeamerDelegate(
-    guards: [BeamGuard(pathBlueprints: ['/'], check:(context, location){
+    guards: [BeamGuard(pathBlueprints: [...HomeLocation().pathBlueprints, ...InputLocation().pathBlueprints, ...ItemLocation().pathBlueprints],
+        check:(context, location){
       return context.watch<UserNotifier>().userState;  //이 값이 true이면 homepage로 false면 authpage로
     },
         showPage: BeamPage(child: StartScreen())//fasle일 경우
     )],
-    locationBuilder: BeamerLocationBuilder(beamLocations: [HomeLocation(), InputLocation()])
+    locationBuilder: BeamerLocationBuilder(beamLocations: [HomeLocation(), InputLocation(), ItemLocation()])
 );
 
 

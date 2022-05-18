@@ -27,4 +27,15 @@ class ItemService{
     return itemModel;
   }
 
+  Future<List<ItemModel>> getItems()async{
+    CollectionReference<Map<String, dynamic>> collectionReference = FirebaseFirestore.instance.collection(COL_ITEMS);
+    QuerySnapshot<Map<String, dynamic>> snapshots = await collectionReference.get();
+    List<ItemModel> items = [];
+    for(int i = 0; i< snapshots.size; i++){
+      ItemModel itemModel = ItemModel.fromQuerySnapShot(snapshots.docs[i]);
+      items.add(itemModel);
+    }
+    return items;
+  }
+
 }
