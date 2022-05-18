@@ -9,6 +9,7 @@ import 'package:sports_matching/constants/common_size.dart';
 import 'package:provider/provider.dart';
 import 'package:sports_matching/data/item_model.dart';
 import 'package:sports_matching/repo/item_service.dart';
+import 'package:sports_matching/router/locations.dart';
 import 'package:sports_matching/states/category_notifier.dart';
 import 'package:sports_matching/states/select_image_notifier.dart';
 import 'package:sports_matching/states/user_notifier.dart';
@@ -74,7 +75,7 @@ class _InputScreenState extends State<InputScreen> {
 
                   _divider,
                   ListTile(onTap: (){
-                    context.beamToNamed('/input/category_input');
+                    context.beamToNamed('/$LOCATION_INPUT/$LOCATION_CATEGORY_INPUT');
                   },
                     dense:true,
                     title: Text(context.watch<CategoryNotifier>().currentCategoryInKor), trailing: Icon(Icons.navigate_next),),
@@ -122,10 +123,9 @@ class _InputScreenState extends State<InputScreen> {
       geoFirePoint: userNotifier.userModel!.geoFirePoint,
       createdDate: DateTime.now().toUtc(),
     );
-    logger.d('img upload finished - ${downloadUrls.toString()}');
+    logger.d('img upload finished - ${itemKey}');
 
     await ItemService().createNewItem(itemModel.toJson(), itemKey);
-
     isCreatingItem = false;
     context.beamBack();
   }

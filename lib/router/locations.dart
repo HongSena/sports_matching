@@ -7,13 +7,17 @@ import 'package:sports_matching/screens/input/category_input_screen.dart';
 import 'package:sports_matching/screens/input/input_screen.dart';
 import 'package:sports_matching/states/category_notifier.dart';
 import 'package:sports_matching/states/select_image_notifier.dart';
-
 import '../screens/item/item_detail_screen.dart';
+import 'package:logger/logger.dart';
+
+import '../utils/logger.dart';
 
 const LOCATION_HOME = 'home';
 const LOCATION_INPUT = 'input';
 const LOCATION_ITEM = 'item';
+const LOCATION_SEARCH = 'search';
 const LOCATION_ITEM_ID = 'item_id';
+const LOCATION_CHATROOM_ID = 'chatroom_id';
 const LOCATION_CATEGORY_INPUT = 'category_input';
 
 
@@ -69,7 +73,7 @@ class InputLocation extends BeamLocation{
   }
 
   @override
-  List get pathBlueprints =>['/input', '/input/category_input'];
+  List get pathBlueprints =>['/$LOCATION_INPUT', '/$LOCATION_INPUT/$LOCATION_CATEGORY_INPUT'];
 
 }
 
@@ -79,15 +83,11 @@ class ItemLocation extends BeamLocation {
     return [
       ...HomeLocation().buildPages(context, state),
       if(state.pathParameters.containsKey(LOCATION_ITEM_ID))
-        BeamPage(
-            key:  ValueKey(LOCATION_ITEM_ID),
-            child: ItemDetailScreen(LOCATION_ITEM_ID)
-        ),
-
+        BeamPage(key: ValueKey(LOCATION_ITEM_ID), child: ItemDetailScreen(state.pathParameters[LOCATION_ITEM_ID]??""),),
     ];
   }
 
   @override
-  List get pathBlueprints =>['/${LOCATION_ITEM}/:${LOCATION_ITEM_ID}'];
+  List get pathBlueprints =>['/$LOCATION_ITEM/:$LOCATION_ITEM_ID'];
 
 }

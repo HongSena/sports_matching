@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,9 @@ import 'package:shimmer/shimmer.dart';
 import 'package:sports_matching/data/item_model.dart';
 import 'package:sports_matching/repo/item_service.dart';
 import 'package:sports_matching/repo/user_service.dart';
+
+import '../../router/locations.dart';
+import '../../utils/logger.dart';
 
 class ItemsPage extends StatelessWidget {
   const ItemsPage({Key? key}) : super(key: key);
@@ -45,8 +49,8 @@ class ItemsPage extends StatelessWidget {
         ItemModel item = items[index];
         return InkWell(
           onTap: () {
-
-          },
+            context.beamToNamed('/$LOCATION_ITEM/:${item.itemKey}');
+            },
           child: SizedBox(height: imgSize, child: Row(
             children: [
               SizedBox(height: imgSize,

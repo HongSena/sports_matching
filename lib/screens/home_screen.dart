@@ -7,6 +7,7 @@ import 'package:sports_matching/screens/home/items_page.dart';
 import 'package:sports_matching/states/user_notifier.dart';
 import 'package:sports_matching/screens/home/items_page.dart';
 
+import '../router/locations.dart';
 import '../widgets/expandable_fab.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -31,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           MaterialButton(
             onPressed:(){
-              context.beamToNamed('/input');
+              context.beamToNamed('/$LOCATION_INPUT');
             },
             shape: CircleBorder(),
             height: 56,
