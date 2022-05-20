@@ -5,6 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sports_matching/states/user_notifier.dart';
+
+import '../utils/logger.dart';
 class FirebaseAuthState extends ChangeNotifier {
   FirebaseAuthStatus _firebaseAuthStatus = FirebaseAuthStatus.signout;
   User? _firebaseUser = null;
@@ -41,6 +43,7 @@ class FirebaseAuthState extends ChangeNotifier {
       SnackBar snackBar = SnackBar(content: Text(_message));
       Scaffold.of(context).showSnackBar(snackBar);
     });
+    logger.d(user);
     if(user!=null){
       UserNotifier().initUser();
       SnackBar snackBar = SnackBar(content: Text("회원가입이 완료되었습니다."));

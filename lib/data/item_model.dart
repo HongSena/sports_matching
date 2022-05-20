@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 
 class ItemModel{
+  // startData
+  // startTime
   late String itemKey;
   late String userKey;
   late List<String> imageDownloadurls;
