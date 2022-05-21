@@ -3,7 +3,9 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sports_matching/data/user_model.dart';
 import 'package:sports_matching/screens/home/items_page.dart';
+import 'package:sports_matching/screens/home/map_page.dart';
 import 'package:sports_matching/states/user_notifier.dart';
 import 'package:sports_matching/screens/home/items_page.dart';
 
@@ -25,7 +27,11 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: IndexedStack(
         index: _bottomSelectedIndex,
-        children: [ItemsPage() ,Container(color: Colors.accents[3]),Container(color: Colors.accents[6]),Container(color: Colors.accents[9])],
+        children: [
+          ItemsPage(),
+          (context.read<UserNotifier>().userModel==null)?Container():MapPage(context.read<UserNotifier>().userModel!),
+          Container(color: Colors.accents[3]),Container(color: Colors.accents[6]),Container(color: Colors.accents[9])
+        ],
       ),
       floatingActionButton: ExpandableFab(
         distance: 90,

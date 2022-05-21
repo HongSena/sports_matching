@@ -19,6 +19,7 @@ class ItemService{
     }
   }
 
+
   Future<ItemModel> getItem(String itemKey) async{
     if (itemKey[0] == ':') {
       itemKey = itemKey.substring(1);
