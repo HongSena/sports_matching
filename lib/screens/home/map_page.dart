@@ -2,6 +2,8 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
+import 'package:sports_matching/data/item_model.dart';
+import 'package:sports_matching/repo/item_service.dart';
 import '../../data/user_model.dart';
 
 class MapPage extends StatefulWidget {
@@ -39,6 +41,36 @@ class _MapPageState extends State<MapPage> {
     setState(() {});
   }
 
+  Widget _buildItemWidget(Offset offset, String category){
+    String imgUrl = "";
+    if(category == 'football'){
+      imgUrl = 'assets/imgs/categoryImgs/football-ball.png';
+    }else if(category == 'baskeyball'){
+      imgUrl = 'assets/imgs/categoryImgs/basketball.png';
+    }else if(category == 'baseball'){
+      imgUrl = 'assets/imgs/happiness.png';
+    }else if(category == 'bodybuilding'){
+      imgUrl = 'assets/imgs/categoryImgs/bodybuilder.png';
+    }else if(category == 'crossfit'){
+      imgUrl = 'assets/imgs/happiness.png';
+    }else if(category == 'powerlifting'){
+      imgUrl = 'assets/imgs/happiness.png';
+    }else if(category == 'running'){
+      imgUrl = 'assets/imgs/run.png';
+    }else if(category == 'fencing'){
+      imgUrl = 'assets/imgs/ronnie.png';
+    }else{
+      imgUrl = 'assets/imgs/tomato.png';
+    }
+    return Positioned(
+        left: offset.dx,
+        top: offset.dy,
+        width: 34,
+        height: 34,
+        child: ExtendedImage.asset(imgUrl, shape: BoxShape.circle,)
+    );
+  }
+
   Widget _bulidMarkerWidget(Offset offset, {Color color = Colors.red}){
     return Positioned(
         left: offset.dx,
@@ -57,24 +89,37 @@ class _MapPageState extends State<MapPage> {
         Size size = MediaQuery.of(context).size;
         final middleOnScreen = Offset(size.width/2, size.height/2);
         final latLngOnMap = transformer.fromXYCoordsToLatLng(middleOnScreen);
-        print('${latLngOnMap.longitude} - ${latLngOnMap.latitude}');
-        return Stack(
-          children: [
-            GestureDetector(
-              onScaleStart: _scaleStart,
-              onScaleUpdate: _scaleUpdate,
-              child: Map(
-                controller: controller,
-                builder: (context, x, y, z) {
-                  final url = 'https://www.google.com/maps/vt/pb=!1m4!1m3!1i$z!2i$x!3i$y!2m3!1e0!2sm!3i420120488!3m7!2sen!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0!5m1!1e0!23i4111425';
-                  return ExtendedImage.network(
-                    url,
-                    fit: BoxFit.cover,
-                  );
-                },),
-            ),
-            myLocationWidget
-          ],
+        return FutureBuilder<List<ItemModel>>(
+          future: ItemService().getNearByItems(widget._userModel.userKey, latLngOnMap),
+          builder: (context, snapshot) {
+            List<Widget> nearByItems = [];
+            if(snapshot.hasData){
+              snapshot.data!.forEach((item) {
+                //print('print poinr = ${item.geoFirePoint.latitude} - ${item.geoFirePoint.longitude}');
+                final offset = transformer.fromLatLngToXYCoords(LatLng(item.geoFirePoint.latitude, item.geoFirePoint.longitude));
+                nearByItems.add(_buildItemWidget(offset, item.category));
+              });
+            }
+            return Stack(
+              children: [
+                GestureDetector(
+                  onScaleStart: _scaleStart,
+                  onScaleUpdate: _scaleUpdate,
+                  child: Map(
+                    controller: controller,
+                    builder: (context, x, y, z) {
+                      final url = 'https://www.google.com/maps/vt/pb=!1m4!1m3!1i$z!2i$x!3i$y!2m3!1e0!2sm!3i420120488!3m7!2sen!5e1105!12m4!1e68!2m2!1sset!2sRoadmap!4e0!5m1!1e0!23i4111425';
+                      return ExtendedImage.network(
+                        url,
+                        fit: BoxFit.cover,
+                      );
+                    },),
+                ),
+                myLocationWidget,
+                ...nearByItems
+              ],
+            );
+          }
         );
       },
       controller: controller,
