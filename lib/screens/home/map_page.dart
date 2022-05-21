@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:latlng/latlng.dart';
@@ -5,6 +6,7 @@ import 'package:map/map.dart';
 import 'package:sports_matching/data/item_model.dart';
 import 'package:sports_matching/repo/item_service.dart';
 import '../../data/user_model.dart';
+import '../../router/locations.dart';
 
 class MapPage extends StatefulWidget {
   final UserModel _userModel;
@@ -41,34 +43,39 @@ class _MapPageState extends State<MapPage> {
     setState(() {});
   }
 
-  Widget _buildItemWidget(Offset offset, String category){
+  Widget _buildItemWidget(Offset offset, ItemModel itemModel){
     String imgUrl = "";
-    if(category == 'football'){
-      imgUrl = 'assets/imgs/categoryImgs/football-ball.png';
-    }else if(category == 'baskeyball'){
-      imgUrl = 'assets/imgs/categoryImgs/basketball.png';
-    }else if(category == 'baseball'){
-      imgUrl = 'assets/imgs/happiness.png';
-    }else if(category == 'bodybuilding'){
-      imgUrl = 'assets/imgs/categoryImgs/bodybuilder.png';
-    }else if(category == 'crossfit'){
-      imgUrl = 'assets/imgs/happiness.png';
-    }else if(category == 'powerlifting'){
-      imgUrl = 'assets/imgs/happiness.png';
-    }else if(category == 'running'){
-      imgUrl = 'assets/imgs/run.png';
-    }else if(category == 'fencing'){
+    if(itemModel.category == 'football'){
+      imgUrl = 'assets/imgs/football-ball.png';
+    }else if(itemModel.category == 'baskeyball'){
+      imgUrl = 'assets/imgs/football-ball.png';
+    }else if(itemModel.category == 'baseball'){
+      imgUrl = 'assets/imgs/baseball.png';
+    }else if(itemModel.category == 'bodybuilding'){
       imgUrl = 'assets/imgs/ronnie.png';
+    }else if(itemModel.category == 'crossfit'){
+      imgUrl = 'assets/imgs/crossfit.png';
+    }else if(itemModel.category == 'powerlifting'){
+      imgUrl = 'assets/imgs/powerlifting.png';
+    }else if(itemModel.category == 'running'){
+      imgUrl = 'assets/imgs/run.png';
+    }else if(itemModel.category == 'fencing'){
+      imgUrl = 'assets/imgs/fencing.png';
     }else{
       imgUrl = 'assets/imgs/tomato.png';
     }
     return Positioned(
-        left: offset.dx,
-        top: offset.dy,
-        width: 34,
-        height: 34,
-        child: ExtendedImage.asset(imgUrl, shape: BoxShape.circle,)
-    );
+          left: offset.dx,
+          top: offset.dy,
+          width: 34,
+          height: 34,
+          child: InkWell(
+            onTap: (){
+              context.beamToNamed('/$LOCATION_ITEM/:${itemModel.itemKey}');
+            },
+              child: ExtendedImage.asset(imgUrl, shape: BoxShape.circle)
+          )
+      );
   }
 
   Widget _bulidMarkerWidget(Offset offset, {Color color = Colors.red}){
@@ -97,7 +104,7 @@ class _MapPageState extends State<MapPage> {
               snapshot.data!.forEach((item) {
                 //print('print poinr = ${item.geoFirePoint.latitude} - ${item.geoFirePoint.longitude}');
                 final offset = transformer.fromLatLngToXYCoords(LatLng(item.geoFirePoint.latitude, item.geoFirePoint.longitude));
-                nearByItems.add(_buildItemWidget(offset, item.category));
+                nearByItems.add(_buildItemWidget(offset, item));
               });
             }
             return Stack(

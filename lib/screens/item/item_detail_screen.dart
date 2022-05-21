@@ -36,7 +36,6 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
     print('_size: $_size');
     print('_statusBarHeight $_statusBarHeight');
     _scrollController.addListener(() {
-      print('flag');
       if(_size == null || _statusBarHeight == null)
         return;
       if(isAppbarCollapsed){
