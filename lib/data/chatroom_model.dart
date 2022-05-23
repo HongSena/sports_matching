@@ -84,10 +84,15 @@ class ChatroomModel {
     map['chatroomKey'] = chatroomKey;
     return map;
   }
-  static String generateChatRoomKey(String buyer, String itemKey){
+  ChatroomModel.fromQuerySnapshot(
+      QueryDocumentSnapshot<Map<String, dynamic>> snapshot)
+      : this.fromJson(snapshot.data(), snapshot.id, snapshot.reference);
+
+  ChatroomModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot)
+      : this.fromJson(snapshot.data()!, snapshot.id, snapshot.reference);
+
+  static String generateChatRoomKey(String buyer, String itemKey) {
     return '${itemKey}_$buyer';
   }
-  ChatroomModel.fromQuerySnapShot(QueryDocumentSnapshot<Map<String, dynamic>> snapshot) : this.fromJson(snapshot.data(), snapshot.id, snapshot.reference);
-  ChatroomModel.fromSnapShot(DocumentSnapshot<Map<String, dynamic>> snapshot) : this.fromJson(snapshot.data()!, snapshot.id, snapshot.reference);
 
 }

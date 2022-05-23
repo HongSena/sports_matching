@@ -14,16 +14,18 @@ class ChatService{
 
   var snapshotToChatroom = StreamTransformer<DocumentSnapshot<Map<String, dynamic>>, ChatroomModel>
       .fromHandlers(handleData: (snapshot, sink){
-    ChatroomModel chatroom = ChatroomModel.fromSnapShot(snapshot);
+    ChatroomModel chatroom = ChatroomModel.fromSnapshot(snapshot);
     sink.add(chatroom);
   });
 
 
   Future createNewChatroom(ChatroomModel chatroomModel)async{
     DocumentReference<Map<String, dynamic>> documentReference =
-      FirebaseFirestore.instance.collection(COL_CHATROOMS)
-          .doc(ChatroomModel.generateChatRoomKey(chatroomModel.buyerKey, chatroomModel.itemKey));
-    final DocumentSnapshot<Map<String, dynamic>> documentSnapshot = await documentReference.get();
+    FirebaseFirestore.instance.collection(COL_CHATROOMS).doc(
+        ChatroomModel.generateChatRoomKey(
+            chatroomModel.buyerKey, chatroomModel.itemKey));
+    final DocumentSnapshot documentSnapshot = await documentReference.get();
+
     if (!documentSnapshot.exists) {
       await documentReference.set(chatroomModel.toJson());
     }
@@ -31,26 +33,32 @@ class ChatService{
 
   Future createNewChat(String chatroomKey, ChatModel chatModel)async{
     DocumentReference<Map<String, dynamic>> documentReference =
-      FirebaseFirestore.instance.collection(COL_CHATROOMS).
-        doc(chatroomKey).collection(COL_CHATS).doc();
-    await documentReference.set(chatModel.toJson());
+    FirebaseFirestore.instance
+        .collection(COL_CHATROOMS)
+        .doc('${chatroomKey}_${chatModel.userKey}')
+        .collection(COL_CHATS)
+        .doc();
 
     DocumentReference<Map<String, dynamic>> chatroomDocRef =
-    FirebaseFirestore.instance.collection(COL_CHATROOMS).
-    doc(chatroomKey);
+    FirebaseFirestore.instance.collection(COL_CHATROOMS).doc(chatroomKey);
+
+    await documentReference.set(chatModel.toJson());
 
     await FirebaseFirestore.instance.runTransaction((transaction) async {
       transaction.set(documentReference, chatModel.toJson());
-      transaction.set(chatroomDocRef, {
-        DOC_LASTMSG:chatModel.msg,
-        DOC_LASTMSGTIME:chatModel.createDate,
-        DOC_LASTMSGUSERKEY:chatModel.userKey
+      transaction.update(chatroomDocRef, {
+        DOC_LASTMSG: chatModel.msg,
+        DOC_LASTMSGTIME: chatModel.createdDate,
+        DOC_LASTMSGUSERKEY: chatModel.userKey
       });
     });
-
-    Stream<ChatroomModel> connectCahtroom(String chatroomKey){
-      return FirebaseFirestore.instance.collection(COL_CHATROOMS).doc(chatroomKey).snapshots().transform(snapshotToChatroom);
-    }
+  }
+  Stream<ChatroomModel> connectChatroom(String chatroomKey) {
+    return FirebaseFirestore.instance
+        .collection(COL_CHATROOMS)
+        .doc(chatroomKey)
+        .snapshots()
+        .transform(snapshotToChatroom);
   }
 
   Future<List<ChatModel>> getChatList(String chatroomKey) async{
@@ -59,19 +67,19 @@ class ChatService{
         .doc(chatroomKey).collection(COL_CHATS).orderBy(DOC_CREATEDDATE, descending: true).limit(10).get();
     List<ChatModel> chatlist = [];
     snapshot.docs.forEach((docSnapshot) {
-      ChatModel chatModel = ChatModel.fromSnapShot(docSnapshot);
+      ChatModel chatModel = ChatModel.fromSnapshot(docSnapshot);
       chatlist.add(chatModel);
     });
     return chatlist;
   }
   /////////
-  Future<List<ChatModel>> getLatesChats(String chatroomKey, DocumentReference currentLatestChatRef) async{
+  Future<List<ChatModel>> getLatestChats(String chatroomKey, DocumentReference currentLatestChatRef) async{
     QuerySnapshot<Map<String, dynamic>> snapshot =
     await FirebaseFirestore.instance.collection(COL_CHATROOMS).doc(chatroomKey)
         .collection(COL_CHATS).endAtDocument(await currentLatestChatRef.get()).orderBy(DOC_CREATEDDATE, descending: true).get();
     List<ChatModel> chatlist = [];
     snapshot.docs.forEach((docSnapshot) {
-      ChatModel chatModel = ChatModel.fromSnapShot(docSnapshot);
+      ChatModel chatModel = ChatModel.fromSnapshot(docSnapshot);
       chatlist.add(chatModel);
     });
     return chatlist;
@@ -83,7 +91,7 @@ class ChatService{
         .collection(COL_CHATS).startAfterDocument(await oldestChatRef.get()).orderBy(DOC_CREATEDDATE, descending: true).limit(10).get();
     List<ChatModel> chatlist = [];
     snapshot.docs.forEach((docSnapshot) {
-      ChatModel chatModel = ChatModel.fromSnapShot(docSnapshot);
+      ChatModel chatModel = ChatModel.fromSnapshot(docSnapshot);
       chatlist.add(chatModel);
     });
     return chatlist;

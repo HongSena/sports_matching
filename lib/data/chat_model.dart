@@ -1,43 +1,44 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../constants/data_keys.dart';
 
 /// chatKey : ""
 /// msg : ""
-/// createDate : ""
+/// createdDate : ""
 /// userKey : ""
 /// reference : ""
-
 class ChatModel {
-  late String chatKey;
+  String? chatKey;
   late String msg;
-  late String createDate;
+  late DateTime createdDate;
   late String userKey;
   DocumentReference? reference;
-  ChatModel({
-      required this.chatKey,
-      required this.msg,
-      required this.createDate,
-      required this.userKey,
-      this.reference,});
+
+  ChatModel(
+      {required this.msg,
+        required this.createdDate,
+        required this.userKey,
+        this.reference});
 
   ChatModel.fromJson(Map<String, dynamic> json, this.chatKey, this.reference) {
-    chatKey = json['chatKey'];
-    msg = json['msg'];
-    createDate = json['createDate'];
-    userKey = json['userKey'];
+    msg = json[DOC_MSG] ?? "";
+    createdDate = json[DOC_CREATEDDATE] == null
+        ? DateTime.now().toUtc()
+        : (json[DOC_CREATEDDATE] as Timestamp).toDate();
+    userKey = json[DOC_USERKEY] ?? "";
   }
-
 
   Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['chatKey'] = chatKey;
-    map['msg'] = msg;
-    map['createDate'] = createDate;
-    map['userKey'] = userKey;
-    map['reference'] = reference;
+    var map = <String, dynamic>{};
+    map[DOC_MSG] = msg;
+    map[DOC_CREATEDDATE] = createdDate;
+    map[DOC_USERKEY] = userKey;
     return map;
   }
-  ChatModel.fromQuerySnapShot(QueryDocumentSnapshot<Map<String, dynamic>> snapshot) : this.fromJson(snapshot.data(), snapshot.id, snapshot.reference);
-  ChatModel.fromSnapShot(DocumentSnapshot<Map<String, dynamic>> snapshot) : this.fromJson(snapshot.data()!, snapshot.id, snapshot.reference);
 
+  ChatModel.fromQuerySnapshot(
+      QueryDocumentSnapshot<Map<String, dynamic>> snapshot)
+      : this.fromJson(snapshot.data(), snapshot.id, snapshot.reference);
 
+  ChatModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot)
+      : this.fromJson(snapshot.data()!, snapshot.id, snapshot.reference);
 }
