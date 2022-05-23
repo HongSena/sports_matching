@@ -1,6 +1,9 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:sports_matching/data/chatroom_model.dart';
+import 'package:sports_matching/repo/chat_service.dart';
 import 'package:sports_matching/repo/item_service.dart';
 import 'package:sports_matching/screens/item/similar_item.dart';
 import 'package:sports_matching/states/category_notifier.dart';
@@ -10,6 +13,7 @@ import '../../constants/common_size.dart';
 import 'package:extended_image/extended_image.dart';
 import '../../data/item_model.dart';
 import '../../data/user_model.dart';
+import '../../router/locations.dart';
 class ItemDetailScreen extends StatefulWidget {
   final String itemKey;
   const ItemDetailScreen(this.itemKey, {Key? key}) : super(key: key);
@@ -58,6 +62,30 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
     _pageController.dispose();
     super.dispose();
   }
+
+  void _goToChatroom(ItemModel itemModel, UserModel userModel){
+
+    String chatroomKey = ChatroomModel.generateChatRoomKey(userModel.userKey, widget.itemKey);
+
+    ChatroomModel _chatroomModel = ChatroomModel(
+        itemImage: itemModel.imageDownloadurls[0],
+        lastMsgTime: DateTime.now(),
+        itemTitle: itemModel.title,
+        itemKey: widget.itemKey,
+        itemAddress: itemModel.address,
+        itemLevel: itemModel.requiredLevel,
+        sellerKey: itemModel.userKey,
+        buyerKey: userModel.userKey,
+        sellerImage: "https://minimatoolkit.com/images/randomdata/male/101.jpg",
+        buyerImage: "https://minimatoolkit.com/images/randomdata/female/41.jpg",
+        geoFirePoint: itemModel.geoFirePoint,
+        chatroomKey: chatroomKey
+    );
+    ChatService().createNewChatroom(_chatroomModel);
+
+    context.beamToNamed('/$LOCATION_ITEM/:${widget.itemKey}/:$chatroomKey');
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<ItemModel>(
@@ -99,7 +127,10 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                                 ],
                               ),
                               Expanded(child: Container()),
-                              TextButton(onPressed: (){}, child: Text('참가하기'))
+                              TextButton(onPressed: (){
+                                _goToChatroom(itemModel, userModel);
+                              },
+                                  child: Text('참가하기'))
                             ],
                           ),
                         ),

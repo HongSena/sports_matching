@@ -2,6 +2,7 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
+import 'package:sports_matching/screens/chat/chatroom_screen.dart';
 import 'package:sports_matching/screens/home_screen.dart';
 import 'package:sports_matching/screens/input/category_input_screen.dart';
 import 'package:sports_matching/screens/input/input_screen.dart';
@@ -84,10 +85,12 @@ class ItemLocation extends BeamLocation {
       ...HomeLocation().buildPages(context, state),
       if(state.pathParameters.containsKey(LOCATION_ITEM_ID))
         BeamPage(key: ValueKey(LOCATION_ITEM_ID), child: ItemDetailScreen(state.pathParameters[LOCATION_ITEM_ID]??""),),
+      if(state.pathParameters.containsKey(LOCATION_CHATROOM_ID))
+        BeamPage(key: ValueKey(LOCATION_CHATROOM_ID), child: ChatroomScreen(chatroomKey:state.pathParameters[LOCATION_ITEM_ID]??""),),
     ];
   }
 
   @override
-  List get pathBlueprints =>['/$LOCATION_ITEM/:$LOCATION_ITEM_ID'];
+  List get pathBlueprints =>['/$LOCATION_ITEM/:$LOCATION_ITEM_ID/:$LOCATION_CHATROOM_ID'];
 
 }

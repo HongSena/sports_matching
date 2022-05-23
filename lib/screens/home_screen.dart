@@ -40,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed:(){
               context.beamToNamed('/$LOCATION_INPUT');
             },
+
             shape: CircleBorder(),
             height: 56,
             color: Theme.of(context).colorScheme.primary,
@@ -65,7 +66,11 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: false,
         title: Text('잠원동'),
         actions: [
-          IconButton(onPressed: (){context.read<UserNotifier>().setUserAuth(false);}, icon: Icon(CupertinoIcons.nosign)),
+          IconButton(onPressed: (){
+              context.read<UserNotifier>().setUserAuth(false);
+              context.beamToNamed('/');
+            }
+            , icon: Icon(CupertinoIcons.nosign)),
           IconButton(onPressed: (){}, icon: Icon(CupertinoIcons.search)),
           IconButton(onPressed: (){}, icon: Icon(CupertinoIcons.text_justify))
         ],

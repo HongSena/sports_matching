@@ -16,7 +16,7 @@ class ItemModel{
   late String address;
   late GeoFirePoint geoFirePoint;
   late DateTime createdDate;
-  late DocumentReference? reference;
+  DocumentReference? reference;
 
   ItemModel({
     required this.itemKey,
