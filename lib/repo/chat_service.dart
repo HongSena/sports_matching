@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:sports_matching/data/chatroom_model.dart';
 import '../constants/data_keys.dart';
 import '../data/chat_model.dart';
@@ -107,7 +108,13 @@ class ChatService {
   static final ChatService _chatService = ChatService._internal();
   factory ChatService() => _chatService;
   ChatService._internal();
-
+  var snapshotToChatroom = StreamTransformer<
+      DocumentSnapshot<Map<String, dynamic>>,
+      ChatroomModel>.fromHandlers(handleData: (snapshot, sink) {
+    ChatroomModel chatroom = ChatroomModel.fromSnapshot(snapshot);
+    sink.add(chatroom);
+  });
+  
   Future createNewChatroom(ChatroomModel chatroomModel) async {
     DocumentReference<Map<String, dynamic>> documentReference =
     FirebaseFirestore.instance.collection(COL_CHATROOMS).doc(
@@ -145,20 +152,15 @@ class ChatService {
   }
 
   Stream<ChatroomModel> connectChatroom(String chatroomKey) {
-    logger.d('connecChatroom : ${FirebaseFirestore.instance.collection(COL_CHATROOMS).doc(chatroomKey.substring(1)).path}');
+    logger.d(FirebaseFirestore.instance.collection('/${COL_CHATROOMS}').doc(chatroomKey).path);
     return FirebaseFirestore.instance
-        .collection('/$COL_CHATROOMS')
-        .doc(chatroomKey.substring(1))
+        .collection('/chatrooms')
+        .doc(chatroomKey)
         .snapshots()
         .transform(snapshotToChatroom);
   }
 
-  var snapshotToChatroom = StreamTransformer<
-      DocumentSnapshot<Map<String, dynamic>>,
-      ChatroomModel>.fromHandlers(handleData: (snapshot, sink) {
-    ChatroomModel chatroom = ChatroomModel.fromSnapshot(snapshot);
-    sink.add(chatroom);
-  });
+
 
   Future<List<ChatModel>> getChatList(String chatroomKey) async {
     QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
@@ -226,13 +228,13 @@ class ChatService {
     QuerySnapshot<Map<String, dynamic>> buying = await FirebaseFirestore
         .instance
         .collection(COL_CHATROOMS)
-        .where(DOC_BUYERKEY, isEqualTo: myUserkey)
+        .where(DOC_BUYERKEY, isEqualTo: myUserkey)//내가 사는사람이면
         .get();
 
     QuerySnapshot<Map<String, dynamic>> selling = await FirebaseFirestore
         .instance
         .collection(COL_CHATROOMS)
-        .where(DOC_SELLERKEY, isEqualTo: myUserkey)
+        .where(DOC_SELLERKEY, isEqualTo: myUserkey)//내가 파는사람이면
         .get();
 
     buying.docs.forEach((documentSnapshot) {

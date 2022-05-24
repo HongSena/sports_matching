@@ -71,7 +71,7 @@ class _MapPageState extends State<MapPage> {
           height: 34,
           child: InkWell(
             onTap: (){
-              context.beamToNamed('/$LOCATION_ITEM/:${itemModel.itemKey}');
+              context.beamToNamed('/$LOCATION_ITEM/${itemModel.itemKey}');
             },
               child: ExtendedImage.asset(imgUrl, shape: BoxShape.circle)
           )
