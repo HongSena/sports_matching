@@ -10,7 +10,7 @@ class ChatNotifier extends ChangeNotifier {
   String chatroomKey;
 
   ChatNotifier(this.chatroomKey) {
-    ChatService().connectChatroom(chatroomKey.substring(1)).listen((chatroomModel) {
+    ChatService().connectChatroom('${chatroomKey.substring(1)}').listen((chatroomModel) {
       this._chatroomModel = chatroomModel;
       if (this._chatList.isEmpty) {
         ChatService().getChatList(chatroomKey.substring(1)).then((chatList) {

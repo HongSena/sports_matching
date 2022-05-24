@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sports_matching/data/user_model.dart';
+import 'package:sports_matching/screens/chat/chat_list_page.dart';
 import 'package:sports_matching/screens/home/items_page.dart';
 import 'package:sports_matching/screens/home/map_page.dart';
 import 'package:sports_matching/states/user_notifier.dart';
@@ -30,7 +31,8 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           ItemsPage(),
           (context.read<UserNotifier>().userModel==null)?Container():MapPage(context.read<UserNotifier>().userModel!),
-          Container(color: Colors.accents[3]),Container(color: Colors.accents[6]),Container(color: Colors.accents[9])
+          (context.read<UserNotifier>().userModel==null)?Container():ChatListPage(userKey: context.read<UserNotifier>().userModel!.userKey),
+          Container(color: Colors.accents[6]),Container(color: Colors.accents[9])
         ],
       ),
       floatingActionButton: ExpandableFab(

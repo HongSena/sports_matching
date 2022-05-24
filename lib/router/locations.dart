@@ -86,11 +86,11 @@ class ItemLocation extends BeamLocation {
       if(state.pathParameters.containsKey(LOCATION_ITEM_ID))
         BeamPage(key: ValueKey(LOCATION_ITEM_ID), child: ItemDetailScreen(state.pathParameters[LOCATION_ITEM_ID]??""),),
       if(state.pathParameters.containsKey(LOCATION_CHATROOM_ID))
-        BeamPage(key: ValueKey(LOCATION_CHATROOM_ID), child: ChatroomScreen(chatroomKey:state.pathParameters[LOCATION_ITEM_ID]??""),),
+        BeamPage(key: ValueKey(LOCATION_CHATROOM_ID), child: ChatroomScreen(chatroomKey:state.pathParameters[LOCATION_CHATROOM_ID]??""),),
     ];
   }
 
   @override
-  List get pathBlueprints =>['/$LOCATION_ITEM/:$LOCATION_ITEM_ID/:$LOCATION_CHATROOM_ID'];
+  List get pathBlueprints =>['/$LOCATION_ITEM/:$LOCATION_ITEM_ID/:$LOCATION_CHATROOM_ID', '/:$LOCATION_CHATROOM_ID'];
 
 }
