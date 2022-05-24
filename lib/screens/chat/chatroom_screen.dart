@@ -113,14 +113,13 @@ class _ChatroomScreenState extends State<ChatroomScreen> {
                 children: [
                   RichText(
                     text: TextSpan(
-                        text: '거래완료',
                         style: Theme.of(context).textTheme.bodyText1,
                         children: [
-                          TextSpan(text: ' '),
+                          TextSpan(text: ''),
                           TextSpan(
                               text: chatroomModel == null
                                   ? ""
-                                  : chatroomModel.itemTitle,
+                                  : "${chatroomModel.itemTitle}",
                               style: Theme.of(context).textTheme.bodyText2)
                         ]),
                   ),
@@ -128,11 +127,11 @@ class _ChatroomScreenState extends State<ChatroomScreen> {
                     text: TextSpan(
                         text: chatroomModel == null
                             ? ""
-                            : chatroomModel.itemLevel,
+                            : chatroomModel.itemAddress,
                         style: Theme.of(context).textTheme.bodyText1,
                         children: [
                           TextSpan(
-                              text: '(가격제안불가)',
+                              text: "",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText2!

@@ -11,88 +11,116 @@ import 'package:sports_matching/repo/user_service.dart';
 import '../../router/locations.dart';
 import '../../utils/logger.dart';
 
-class ItemsPage extends StatelessWidget {
+class ItemsPage extends StatefulWidget {
   const ItemsPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        Size size = MediaQuery.of(context).size;
-        final imgSize = size.width * 0.25;
-        return FutureBuilder<List<ItemModel>>(
-            future: ItemService().getItems(),
-            builder: (context, snapshot) {
-              return AnimatedSwitcher(
-                  duration: Duration(milliseconds: 300),
-                  child: (snapshot.hasData && snapshot.data!.isNotEmpty)
-                      ?_listView(imgSize, snapshot.data!)
-                      :_shimmerListView(imgSize));
-            });
-      },
-    );
+  State<ItemsPage> createState() => _ItemsPageState();
+}
+
+class _ItemsPageState extends State<ItemsPage> {
+  final List<ItemModel> _items = [];
+  bool init = false;
+  void initState(){
+    if(!init) {
+      _onRefresh();
+      init = true;
+    }
+    super.initState();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(builder: (context, constraints) {
+      Size size = MediaQuery.of(context).size;
+      final imgSize = size.width * 0.25;
+      return AnimatedSwitcher(
+          duration: Duration(milliseconds: 300),
+          child: (_items.isNotEmpty)
+              ? _listView(imgSize)
+              : _shimmerListView(imgSize));
+    });
+  }
 
-  ListView _listView(double imgSize, List<ItemModel> items) {
-    return ListView.separated(
-      padding: EdgeInsets.all(common_small_padding),
-      separatorBuilder: (context, index) {
-        return Divider(
-          height: common_padding * 2 + 1,
-          thickness: 1,
-          color: Colors.grey.shade300,
-          indent: common_small_padding,
-        );
-      },
-      itemBuilder: (context, index) {
-        ItemModel item = items[index];
-        return InkWell(
-          onTap: () {
-            context.beamToNamed('/$LOCATION_ITEM/${item.itemKey}');
-            },
-          child: SizedBox(height: imgSize, child: Row(
-            children: [
-              SizedBox(height: imgSize,
-                  width: imgSize,
-                  child: ExtendedImage.network(
-                    item.imageDownloadurls[0],
-                    shape: BoxShape.rectangle,
-                    fit: BoxFit.cover,
-                    borderRadius: BorderRadius.circular(12),)),
-              SizedBox(width: common_small_padding,),
-              Expanded(
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(item.title, style: Theme
-                          .of(context)
-                          .textTheme
-                          .subtitle1),
-                      Text('53일 전', style: Theme
-                          .of(context)
-                          .textTheme
-                          .subtitle2),
-                      Text(item.requiredLevelSet?'${item.requiredLevel.toString()}레벨':'요구레벨 없음'),
-                      Expanded(child: Container()),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Icon(CupertinoIcons.chat_bubble_2, color: Colors
-                              .grey[500], size: 17),
-                          Text('23', style: TextStyle(
-                              color: Colors.grey[500], fontSize: 13)),
-                          Icon(CupertinoIcons.heart, color: Colors.grey[500],
-                              size: 17),
-                          Text('30', style: TextStyle(
-                              color: Colors.grey[500], fontSize: 13),)
-                        ],
-                      )
-                    ],
-                  ))
-            ],
-          ),),
-        );
-      }, itemCount: items.length);
+  Future _onRefresh() async {
+    _items.clear();
+    _items.addAll(await ItemService().getItems());
+    setState(() {});
+  }
+
+  RefreshIndicator _listView(double imgSize) {
+    return RefreshIndicator(
+      onRefresh: _onRefresh,
+      child: ListView.separated(
+          padding: EdgeInsets.all(common_small_padding),
+          separatorBuilder: (context, index) {
+            return Divider(
+              height: common_padding * 2 + 1,
+              thickness: 1,
+              color: Colors.grey.shade300,
+              indent: common_small_padding,
+            );
+          },
+          itemBuilder: (context, index) {
+            ItemModel item = _items[index];
+            return InkWell(
+              onTap: () {
+                context.beamToNamed('/$LOCATION_ITEM/${item.itemKey}');
+              },
+              child: SizedBox(
+                height: imgSize,
+                child: Row(
+                  children: [
+                    SizedBox(
+                        height: imgSize,
+                        width: imgSize,
+                        child: ExtendedImage.network(
+                          item.imageDownloadurls[0],
+                          shape: BoxShape.rectangle,
+                          fit: BoxFit.cover,
+                          borderRadius: BorderRadius.circular(12),
+                        )),
+                    SizedBox(
+                      width: common_small_padding,
+                    ),
+                    Expanded(
+                        child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(item.title,
+                            style: Theme.of(context).textTheme.subtitle1),
+                        Text('53일 전',
+                            style: Theme.of(context).textTheme.subtitle2),
+                        Text(item.requiredLevelSet
+                            ? '${item.requiredLevel.toString()}레벨'
+                            : '요구레벨 없음'),
+                        Expanded(child: Container()),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Icon(CupertinoIcons.chat_bubble_2,
+                                color: Colors.grey[500], size: 17),
+                            Text('23',
+                                style: TextStyle(
+                                    color: Colors.grey[500], fontSize: 13)),
+                            Icon(CupertinoIcons.heart,
+                                color: Colors.grey[500], size: 17),
+                            Text(
+                              '30',
+                              style: TextStyle(
+                                  color: Colors.grey[500], fontSize: 13),
+                            )
+                          ],
+                        )
+                      ],
+                    ))
+                  ],
+                ),
+              ),
+            );
+          },
+          itemCount: _items.length),
+    );
   }
 
   Widget _shimmerListView(double imgSize) {
@@ -112,59 +140,80 @@ class ItemsPage extends StatelessWidget {
         },
         itemBuilder: (context, index) {
           return InkWell(
-            onTap: () {
-
-            },
-            child: SizedBox(height: imgSize, child: Row(
-              children: [
-                Container(
-                  height: imgSize,
-                  width: imgSize,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    shape: BoxShape.rectangle,
-                    color: Colors.white,),
-                ),
-                SizedBox(width: common_small_padding,),
-                Expanded(
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                            height: 16, width: 150, decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          shape: BoxShape.rectangle,
-                          color: Colors.white,)),
-                        SizedBox(height: 4,),
-                        Container(
-                            height: 16, width: 180, decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          shape: BoxShape.rectangle,
-                          color: Colors.white,)),
-                        SizedBox(height: 4,),
-                        Container(
-                            height: 16, width: 100, decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          shape: BoxShape.rectangle,
-                          color: Colors.white,)),
-                        Expanded(child: Container()),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Container(height: 14,
-                                width: 80,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  shape: BoxShape.rectangle,
-                                  color: Colors.white,))
-                          ],
-                        )
-                      ],
-                    ))
-              ],
-            ),),
+            onTap: () {},
+            child: SizedBox(
+              height: imgSize,
+              child: Row(
+                children: [
+                  Container(
+                    height: imgSize,
+                    width: imgSize,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      shape: BoxShape.rectangle,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(
+                    width: common_small_padding,
+                  ),
+                  Expanded(
+                      child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                          height: 16,
+                          width: 150,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            shape: BoxShape.rectangle,
+                            color: Colors.white,
+                          )),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Container(
+                          height: 16,
+                          width: 180,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            shape: BoxShape.rectangle,
+                            color: Colors.white,
+                          )),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Container(
+                          height: 16,
+                          width: 100,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            shape: BoxShape.rectangle,
+                            color: Colors.white,
+                          )),
+                      Expanded(child: Container()),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+                              height: 14,
+                              width: 80,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                shape: BoxShape.rectangle,
+                                color: Colors.white,
+                              ))
+                        ],
+                      )
+                    ],
+                  ))
+                ],
+              ),
+            ),
           );
-        }, itemCount: 10,),
+        },
+        itemCount: 10,
+      ),
     );
   }
 }
-
