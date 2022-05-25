@@ -59,7 +59,7 @@ class _InputScreenState extends State<InputScreen> {
               body: ListView(
                 children: [
                   MultiImageSelect(),
-
+                  Text('    운동 장소의 사진을 올려주세요'),
                   _divider,
 
                   TextFormField(
@@ -72,13 +72,18 @@ class _InputScreenState extends State<InputScreen> {
                           focusedBorder:_border,enabledBorder: _border
                       )
                   ),
-
                   _divider,
                   ListTile(onTap: (){
                     context.beamToNamed('/$LOCATION_INPUT/$LOCATION_CATEGORY_INPUT');
                   },
                     dense:true,
-                    title: Text(context.watch<CategoryNotifier>().currentCategoryInKor), trailing: Icon(Icons.navigate_next),),
+                    title: (context.watch<CategoryNotifier>().currentCategoryInKor == '선택')?Text('운동을 선택하세요'):Text(context.watch<CategoryNotifier>().currentCategoryInKor), trailing: Icon(Icons.navigate_next),),
+                  _divider,
+                  ListTile(onTap: (){
+                    context.beamToNamed('/$LOCATION_INPUT/$LOCATION_MAP_INPUT');
+                  },
+                    dense:true,
+                    title: Text('운동을 할 곳을 선택하세요'), trailing: Icon(Icons.navigate_next),),
                   _divider,
                   Row(children: [
                     Expanded(child: Padding(
