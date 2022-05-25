@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
 import 'package:sports_matching/screens/chat/chatroom_screen.dart';
+import 'package:sports_matching/screens/chat/evaluation_screen.dart';
 import 'package:sports_matching/screens/home_screen.dart';
 import 'package:sports_matching/screens/input/category_input_screen.dart';
 import 'package:sports_matching/screens/input/input_screen.dart';
@@ -21,6 +22,7 @@ const LOCATION_SEARCH = 'search';
 const LOCATION_ITEM_ID = 'item_id';
 const LOCATION_CHATROOM_ID = 'chatroom_id';
 const LOCATION_CATEGORY_INPUT = 'category_input';
+const LOCATION_EVALUATION_ID = 'evaluation_id';
 
 
 
@@ -93,10 +95,13 @@ class ItemLocation extends BeamLocation {
         BeamPage(key: ValueKey(LOCATION_ITEM_ID), child: ItemDetailScreen(state.pathParameters[LOCATION_ITEM_ID]??""),),
       if(state.pathParameters.containsKey(LOCATION_CHATROOM_ID))
         BeamPage(key: ValueKey(LOCATION_CHATROOM_ID), child: ChatroomScreen(chatroomKey:state.pathParameters[LOCATION_CHATROOM_ID]??""),),
+      if(state.pathParameters.containsKey(LOCATION_EVALUATION_ID))
+        BeamPage(key: ValueKey(LOCATION_EVALUATION_ID), child: EvalutionScreen(),),
+
     ];
   }
 
   @override
-  List get pathBlueprints =>['/$LOCATION_ITEM/:$LOCATION_ITEM_ID/:$LOCATION_CHATROOM_ID', '/:$LOCATION_CHATROOM_ID'];
+  List get pathBlueprints =>['/$LOCATION_ITEM/:$LOCATION_ITEM_ID/:$LOCATION_CHATROOM_ID/:$LOCATION_EVALUATION_ID', '/:$LOCATION_CHATROOM_ID',];
 
 }

@@ -172,42 +172,15 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                                 thickness: 2,
                                 color: Colors.grey[200],
                               ),
-                              MaterialButton(onPressed: (){},padding: EdgeInsets.zero, child: Align(alignment: Alignment.centerLeft, child: Text('이 게시글 신고하기', style: TextStyle(color: Colors.black87, fontSize: 12, fontWeight: FontWeight.w200)))),
                               Divider(
                                 height: 2,
                                 thickness: 2,
                                 color: Colors.grey[200],
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text('${userModel.email}의 다른 게시글'),
-                                  SizedBox(
-                                    width: _size!.width/4,
-                                    child: MaterialButton(
-                                      onPressed: () {  },
-                                      child: Align(
-                                        alignment: Alignment.centerRight,
-                                        child: Text('더보기',  style: TextStyle(color: Colors.black87, fontSize: 12, fontWeight: FontWeight.w200, decoration: TextDecoration.underline)),
-                                      ),
 
-                                    ),
-                                  )
-                                ],
-                              ),
                             ]),
                           ),
                         ),
-                        SliverPadding(
-                          padding: EdgeInsets.all(common_small_padding),
-                          sliver: SliverGrid.count(
-                              crossAxisCount: 2,
-                              mainAxisSpacing: common_small_padding,
-                              crossAxisSpacing: common_small_padding,
-                              childAspectRatio: 6/7,
-                              children: List.generate(10, (index)=> SimilarItem())
-                          ),
-                        )
                       ],
                     ),
                   ),

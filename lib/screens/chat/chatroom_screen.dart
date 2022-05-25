@@ -10,6 +10,7 @@ import 'package:sports_matching/states/user_notifier.dart';
 
 import '../../data/chatroom_model.dart';
 import '../../data/user_model.dart';
+import '../../router/locations.dart';
 import '../../states/chat_notifier.dart';
 import 'chat.dart';
 
@@ -149,7 +150,7 @@ class _ChatroomScreenState extends State<ChatroomScreen> {
               height: 32,
               child: TextButton.icon(
                   onPressed: () {
-                    context.beamToNamed('/');
+                    context.beamToNamed('/$LOCATION_ITEM/:$LOCATION_ITEM_ID/:$LOCATION_CHATROOM_ID/:$LOCATION_EVALUATION_ID');
                   },
                   icon: Icon(
                     Icons.edit,

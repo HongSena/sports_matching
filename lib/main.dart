@@ -8,7 +8,6 @@ import 'package:sports_matching/screens/splash_screen.dart';
 import 'package:sports_matching/states/firebase_auth_state.dart';
 import 'package:sports_matching/states/user_notifier.dart';
 import 'package:sports_matching/utils/logger.dart';
-import 'package:algolia/algolia.dart';
 
 
 final _routerDelegate = BeamerDelegate(
