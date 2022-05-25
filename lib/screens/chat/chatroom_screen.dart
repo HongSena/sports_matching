@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -147,13 +148,15 @@ class _ChatroomScreenState extends State<ChatroomScreen> {
             child: SizedBox(
               height: 32,
               child: TextButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.beamToNamed('/');
+                  },
                   icon: Icon(
                     Icons.edit,
                     size: 16,
                     color: Colors.black87,
                   ),
-                  label: Text('후기 남기기',
+                  label: Text('평가하기',
                       style: Theme.of(context)
                           .textTheme
                           .bodyText1!

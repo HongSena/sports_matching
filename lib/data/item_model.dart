@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 
+import '../constants/data_keys.dart';
+
 class ItemModel{
   // startData
   // startTime
@@ -64,6 +66,20 @@ class ItemModel{
     map['geoFirePoint'] = geoFirePoint.data;
     map['createdDate'] = createdDate;
     return map;
+  }
+  ItemModel.fromAlgoliaObject(Map<String, dynamic> json, this.itemKey) {
+    userKey = json[DOC_USERKEY] ?? "";
+    imageDownloadurls = json[DOC_IMAGEDOWNLOADURLS] != null
+        ? json[DOC_IMAGEDOWNLOADURLS].cast<String>()
+        : [];
+    title = json[DOC_TITLE] ?? "";
+    category = json[DOC_CATEGORY] ?? "none";
+    requiredLevel = json[DOC_PRICE] ?? "";
+    requiredLevelSet = json[DOC_NEGOTIABLE] ?? false;
+    detail = json[DOC_DETAIL] ?? "";
+    address = json[DOC_ADDRESS] ?? "";
+    geoFirePoint = GeoFirePoint(0, 0);
+    createdDate = DateTime.now().toUtc();
   }
 
   static String generateItemKey(String uid){
