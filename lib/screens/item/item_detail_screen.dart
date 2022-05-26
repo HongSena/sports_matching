@@ -122,8 +122,8 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('요구레벨 : 10', style: TextStyle(color: Colors.black87, fontSize: 13, fontWeight: FontWeight.w200)),
-                                  Text('보디빌딩', style: TextStyle(color: Colors.black87, fontSize: 13, fontWeight: FontWeight.w200))
+                                  itemModel.requiredLevelSet?Text('요구레벨 : ${itemModel.requiredLevel}', style: TextStyle(color: Colors.black87, fontSize: 13, fontWeight: FontWeight.w200)):Text('요구레벨 없음', style: TextStyle(color: Colors.black87, fontSize: 13, fontWeight: FontWeight.w200)),
+                                  Text(itemModel.category, style: TextStyle(color: Colors.black87, fontSize: 13, fontWeight: FontWeight.w200))
                                 ],
                               ),
                               Expanded(child: Container()),
@@ -140,14 +140,6 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                       controller: _scrollController,
                       slivers: [
                         _imagesAppbar(itemModel),
-                        // SliverToBoxAdapter(
-                        //   child: Container(
-                        //     height: _size!.height * 2,
-                        //     color: Colors.cyan,
-                        //     child:
-                        //     Center(child: Text('item key is${widget.itemKey}')),
-                        //   ),
-                        // ),
                         SliverPadding(
                           padding: EdgeInsets.all(common_padding),
                           sliver: SliverList(
@@ -165,7 +157,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                               _textGap,
                               Text(itemModel.detail, style: TextStyle(color: Colors.black87, fontSize: 12, fontWeight: FontWeight.w200)),
                               _textGap,
-                              Text('조회수', style: TextStyle(color: Colors.black54, fontSize: 12, fontWeight: FontWeight.w100)),
+                              Text('운동시간 : ${itemModel.appointmentTime}', style: TextStyle(color: Colors.black54, fontSize: 12, fontWeight: FontWeight.w100)),
                               _textGap,
                               Divider(
                                 height: 2,
@@ -266,8 +258,8 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
   Widget _userSection(UserModel userModel) {
     return Row(
                               children: [
-                                ExtendedImage.network(
-                                  'https://picsum.photos/50',
+                                ExtendedImage.asset(
+                                  'assets/imgs/ronnie.png',
                                   fit: BoxFit.cover,
                                   width: _size!.width/10,
                                   height: _size!.width/10,
@@ -280,7 +272,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(userModel.email, style: TextStyle(color: Colors.black87, fontSize: 14, fontWeight: FontWeight.w400)),
+                                      Text('로니 콜먼 님', style: TextStyle(color: Colors.black87, fontSize: 14, fontWeight: FontWeight.w400)),
                                       Text(userModel.address, style: TextStyle(color: Colors.black54, fontSize: 11, fontWeight: FontWeight.w100))
                                     ]
                                   ),
@@ -311,7 +303,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                                                 borderRadius: BorderRadius.circular(2),
                                                 child: LinearProgressIndicator(
                                                   color: Colors.red,
-                                                  value: 0.373,
+                                                  value: 0.803,
                                                   minHeight: 3,
                                                   backgroundColor: Colors.grey[200],
                                                 ),
@@ -324,7 +316,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                                       ],
                                     ),
                                     SizedBox(height: 6,),
-                                    Text('매너점수', style: TextStyle(decoration: TextDecoration.underline, color: Colors.black54, fontSize: 11, fontWeight: FontWeight.w100),
+                                    Text(' 매너점수', style: TextStyle(decoration: TextDecoration.underline, color: Colors.black54, fontSize: 11, fontWeight: FontWeight.w100),
                                     )
                                   ],
                                 )

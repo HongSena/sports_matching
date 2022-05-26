@@ -1,6 +1,6 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
 import '../../data/chat_model.dart';
 const roundedCorner = Radius.circular(20);
 
@@ -25,8 +25,8 @@ class Chat extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        ExtendedImage.network(
-          'https://randomuser.me/api/portraits/women/26.jpg',
+        ExtendedImage.asset(
+          'assets/imgs/ronnie.png',
           width: 40,
           height: 40,
           fit: BoxFit.cover,
@@ -57,7 +57,7 @@ class Chat extends StatelessWidget {
             SizedBox(
               width: 6,
             ),
-            Text('오전 10:25'),
+            Text( DateFormat('HH:mm').format(chatModel.createdDate)),
           ],
         ),
       ],
@@ -69,7 +69,7 @@ class Chat extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Text('오전 10:25'),
+        Text(DateFormat('HH:mm').format(chatModel.createdDate)),
         SizedBox(
           width: 6,
         ),

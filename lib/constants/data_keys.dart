@@ -32,3 +32,4 @@ const DOC_DETAIL = "detail";
 const DOC_ADDRESS = "address";
 const DOC_CREATEDDATE = "createdDate";
 const DOC_PHONENUMBER = "phoneNumber";
+const DOC_APPOINTMENTTIME = "appointmentTime";

@@ -35,6 +35,10 @@ class ChatNotifier extends ChangeNotifier {
 
     ChatService().createNewChat(chatroomKey.substring(1), chatModel);
   }
+  void delChatroom(){
+    ChatService().deleteCaht(chatroomKey.substring(1));
+    notifyListeners();
+  }
 
   List<ChatModel> get chatList => _chatList;
 

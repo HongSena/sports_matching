@@ -62,7 +62,7 @@ class _MapInputScreenState extends State<MapInputScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('운동할 곳 선택'), actions: [
-        TextButton(onPressed: (){context.beamToNamed('/$LOCATION_INPUT');},
+        TextButton(onPressed: (){context.beamBack();},
           child: Text('완료', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300)),
         ),
       ],),

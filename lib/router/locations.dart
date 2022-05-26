@@ -61,7 +61,6 @@ class InputLocation extends BeamLocation{
   }
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) {
-    UserModel? _userModel = context.read<UserNotifier>().userModel;
     return [
       ...HomeLocation().buildPages(context, state),
       if(state.pathBlueprintSegments.contains(LOCATION_INPUT))
@@ -98,19 +97,20 @@ class InputLocation extends BeamLocation{
 class ItemLocation extends BeamLocation {
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) {
-    return [
+
+      return [
       ...HomeLocation().buildPages(context, state),
       if(state.pathParameters.containsKey(LOCATION_ITEM_ID))
         BeamPage(key: ValueKey(LOCATION_ITEM_ID), child: ItemDetailScreen(state.pathParameters[LOCATION_ITEM_ID]??""),),
       if(state.pathParameters.containsKey(LOCATION_CHATROOM_ID))
         BeamPage(key: ValueKey(LOCATION_CHATROOM_ID), child: ChatroomScreen(chatroomKey:state.pathParameters[LOCATION_CHATROOM_ID]??""),),
       if(state.pathParameters.containsKey(LOCATION_EVALUATION_ID))
-        BeamPage(key: ValueKey(LOCATION_EVALUATION_ID), child: EvalutionScreen(),),
+        BeamPage(key: ValueKey(LOCATION_EVALUATION_ID), child: EvalutionScreen())
 
     ];
   }
 
   @override
-  List get pathBlueprints =>['/$LOCATION_ITEM/:$LOCATION_ITEM_ID/:$LOCATION_CHATROOM_ID/:$LOCATION_EVALUATION_ID', '/:$LOCATION_CHATROOM_ID',];
+  List get pathBlueprints =>['/$LOCATION_ITEM/:$LOCATION_ITEM_ID/:$LOCATION_CHATROOM_ID/:$LOCATION_EVALUATION_ID', '/:$LOCATION_CHATROOM_ID/:$LOCATION_EVALUATION_ID',];
 
 }

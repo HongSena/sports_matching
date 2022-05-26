@@ -27,11 +27,16 @@ class InputScreen extends StatefulWidget {
 class _InputScreenState extends State<InputScreen> {
   var _divider =  Divider(height: 1, thickness: 1, color: Colors.grey, indent: common_padding, endIndent: common_padding);
   bool _levelLimitSelected = false;
+  late String _date, _time;
+  late String dateTime;
   var _border = UnderlineInputBorder(borderSide: BorderSide(color: Colors.transparent));
   TextEditingController _levelController = TextEditingController();
   bool isCreatingItem = false;
+  bool flag = true;
   TextEditingController _titleController = TextEditingController();
   TextEditingController _detailController = TextEditingController();
+  TextEditingController _dateEdit = TextEditingController();
+  TextEditingController _timeEdit = TextEditingController();
 
 
   @override
@@ -80,10 +85,115 @@ class _InputScreenState extends State<InputScreen> {
                     title: (context.watch<CategoryNotifier>().currentCategoryInKor == '선택')?Text('운동을 선택하세요'):Text(context.watch<CategoryNotifier>().currentCategoryInKor), trailing: Icon(Icons.navigate_next),),
                   _divider,
                   ListTile(onTap: (){
+                    flag = false;
                     context.beamToNamed('/$LOCATION_INPUT/$LOCATION_MAP_INPUT');
+                    setState(() {});
                   },
                     dense:true,
-                    title: Text('운동을 할 곳을 선택하세요'), trailing: Icon(Icons.navigate_next),),
+                    title: flag?Text('운동을 할 곳을 선택하세요'):Text('${context.watch<UserNotifier>().userModel!.geoFirePoint.latitude}_${context.watch<UserNotifier>().userModel!.geoFirePoint.latitude}'), trailing: Icon(Icons.navigate_next),),
+                  _divider,
+                  Row (
+                    children: [
+                      Flexible(
+                          child: Column (
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 2.0),
+                                  child: Text (
+                                    'date',
+                                    style: TextStyle (
+                                      color: Colors.black54,
+                                      fontSize: 12,
+                                    ),
+                                  )
+                              ),
+                              TextFormField (
+                                autovalidateMode: AutovalidateMode.always,
+                                controller: _dateEdit,
+                                onSaved: (value) {
+                                  _date = value as String;
+                                },
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Select Date';
+                                  }
+                                  return null;
+                                },
+                                onTap: () async {
+                                  DateTime? date;
+                                  FocusScope.of(context).requestFocus(new FocusNode());
+                                  date = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime (DateTime.now().year),
+                                      lastDate: DateTime (DateTime.now().year + 1)
+                                  );
+                                  if (date != null) {
+                                    _dateEdit.text = date.toIso8601String().substring(0, 10);
+                                  }
+                                },
+                                decoration: InputDecoration (
+                                  contentPadding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
+                                  border: OutlineInputBorder (
+                                      borderSide: const BorderSide(width: 0.5)
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                      ),
+                      Padding(padding: EdgeInsets.all(15.0)),
+                      Flexible(
+                          child: Column (
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 2.0),
+                                  child: Text (
+                                    'time',
+                                    style: TextStyle (
+                                      color: Colors.black54,
+                                      fontSize: 12,
+                                    ),
+                                  )
+                              ),
+                              TextFormField (
+                                autovalidateMode: AutovalidateMode.always,
+                                controller: _timeEdit,
+                                onSaved: (value) {
+                                  _time = value as String;
+                                },
+                                validator: (value) {
+                                  logger.d('value : $value');
+                                  if (value == null || value.isEmpty) {
+                                    return 'Select Time';
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration (
+                                  contentPadding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 0.0),
+                                  border: OutlineInputBorder (
+                                      borderSide: const BorderSide(width: 0.5)
+                                  ),
+                                ),
+                                onTap: () async {
+                                  TimeOfDay? time;
+                                  FocusScope.of(context).requestFocus(new FocusNode());
+                                  time = await showTimePicker(
+                                    context: context,
+                                    initialTime: TimeOfDay.now(),
+                                  );
+                                  if (time != null) {
+                                    _timeEdit.text = time.toString().substring(10, 15);
+                                  }
+                                },
+                              ),
+                            ],
+                          )
+                      ),
+                    ],
+                  ),
                   _divider,
                   Row(children: [
                     Expanded(child: Padding(
@@ -95,7 +205,6 @@ class _InputScreenState extends State<InputScreen> {
                     });}, icon: Icon(_levelLimitSelected?Icons.check_circle:Icons.check_circle_outline, color: _levelLimitSelected?Theme.of(context).primaryColor:Colors.black54),label: Text('설정하기', style: TextStyle(color: _levelLimitSelected?Theme.of(context).primaryColor:Colors.black54),), style: TextButton.styleFrom(backgroundColor: Colors.transparent, primary: Colors.grey))],),
                   _divider,
                   TextFormField(controller: _detailController, maxLines: null,keyboardType: TextInputType.multiline,decoration: InputDecoration(hintText: '게시글 내용', contentPadding: EdgeInsets.symmetric(horizontal: common_padding),focusedBorder: _border,enabledBorder: _border)),
-
                 ],
               )
           ),
@@ -127,6 +236,7 @@ class _InputScreenState extends State<InputScreen> {
       address: userNotifier.userModel!.address,
       geoFirePoint: userNotifier.userModel!.geoFirePoint,
       createdDate: DateTime.now().toUtc(),
+      appointmentTime: (_dateEdit.text + _timeEdit.text)
     );
     logger.d('img upload finished - ${itemKey}');
 

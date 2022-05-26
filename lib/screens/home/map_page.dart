@@ -48,7 +48,7 @@ class _MapPageState extends State<MapPage> {
     if(itemModel.category == 'football'){
       imgUrl = 'assets/imgs/football-ball.png';
     }else if(itemModel.category == 'baskeyball'){
-      imgUrl = 'assets/imgs/football-ball.png';
+      imgUrl = 'assets/imgs/basketball.png';
     }else if(itemModel.category == 'baseball'){
       imgUrl = 'assets/imgs/baseball.png';
     }else if(itemModel.category == 'bodybuilding'){

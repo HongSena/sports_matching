@@ -58,10 +58,14 @@ class ItemService{
 
     for(int i = 0; i<snapshots.length; i++){
       ItemModel itemModel = ItemModel.fromSnapShot(snapshots[i]);
-      //todo:remove my in item
       items.add(itemModel);
     }
     return items;
+  }
+
+  Future deleteItem()async{
+    logger.d(FirebaseFirestore.instance.collection(COL_ITEMS).doc("/GXCcU3MSWdd9afCdrWbbkVBhrZ02_1653168223294").path);
+      await FirebaseFirestore.instance.collection('/${COL_ITEMS}').doc("/GXCcU3MSWdd9afCdrWbbkVBhrZ02_1653168223294").delete();
   }
 
 }

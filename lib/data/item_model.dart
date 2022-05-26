@@ -18,6 +18,7 @@ class ItemModel{
   late String address;
   late GeoFirePoint geoFirePoint;
   late DateTime createdDate;
+  late String appointmentTime;
   DocumentReference? reference;
 
   ItemModel({
@@ -32,6 +33,7 @@ class ItemModel{
     required this.address,
     required this.geoFirePoint,
     required this.createdDate,
+    required this.appointmentTime,
     this.reference,});
 
   ItemModel.fromJson(Map<String, dynamic> json, this.itemKey, this.reference) {
@@ -47,6 +49,7 @@ class ItemModel{
     geoFirePoint = GeoFirePoint((json['geoFirePoint']['geopoint']).latitude, (json['geoFirePoint']['geopoint']).longitude);
     createdDate = json['createdDate']== null ? DateTime.now().toUtc(): (json['createdDate'] as Timestamp).toDate();
     reference = json['reference'];
+    appointmentTime = json['appointmentTime'];
   }
 
   ItemModel.fromQuerySnapShot(QueryDocumentSnapshot<Map<String, dynamic>> snapshot) : this.fromJson(snapshot.data(), snapshot.id, snapshot.reference);
@@ -65,6 +68,7 @@ class ItemModel{
     map['address'] = address;
     map['geoFirePoint'] = geoFirePoint.data;
     map['createdDate'] = createdDate;
+    map['appointmentTime'] = appointmentTime;
     return map;
   }
   ItemModel.fromAlgoliaObject(Map<String, dynamic> json, this.itemKey) {
@@ -80,6 +84,7 @@ class ItemModel{
     address = json[DOC_ADDRESS] ?? "";
     geoFirePoint = GeoFirePoint(0, 0);
     createdDate = DateTime.now().toUtc();
+    appointmentTime = json[DOC_APPOINTMENTTIME]??"";
   }
 
   static String generateItemKey(String uid){

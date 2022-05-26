@@ -37,7 +37,10 @@ class _SignInFormState extends State<SignInForm> {
           child: ListView(
             children: <Widget>[
               SizedBox(height: 16.0,),
-              Image.asset('assets/imgs/tomato.png'),
+              SizedBox(
+                width: 300,
+                  height: 350,
+                  child: Image.asset('assets/imgs/ronnie.png')),
               TextFormField(
                 cursorColor: Colors.black54,
                 controller: _emailContriller,

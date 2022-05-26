@@ -12,6 +12,7 @@ import '../../data/chatroom_model.dart';
 import '../../data/user_model.dart';
 import '../../router/locations.dart';
 import '../../states/chat_notifier.dart';
+import '../../utils/logger.dart';
 import 'chat.dart';
 
 
@@ -31,6 +32,7 @@ class _ChatroomScreenState extends State<ChatroomScreen> {
   @override
   void initState() {
     _chatNotifier = ChatNotifier(widget.chatroomKey);
+    logger.d(widget.chatroomKey);
     super.initState();
   }
 

@@ -1,10 +1,8 @@
 import 'package:beamer/beamer.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-
 import '../../data/chatroom_model.dart';
 import '../../repo/chat_service.dart';
-import '../../utils/logger.dart';
 
 class ChatListPage extends StatelessWidget {
   final String userKey;
@@ -26,8 +24,8 @@ class ChatListPage extends StatelessWidget {
                     onTap: () {
                       context.beamToNamed('/:${chatroomModel.chatroomKey}');
                     },
-                    leading: ExtendedImage.network(
-                      'https://randomuser.me/api/portraits/women/11.jpg',
+                    leading: ExtendedImage.asset(
+                      'assets/imgs/ronnie.png',
                       shape: BoxShape.circle,
                       fit: BoxFit.cover,
                       height: size.width / 8,
@@ -46,14 +44,14 @@ class ChatListPage extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       text: TextSpan(
                           text: iamBuyer
-                              ? chatroomModel.sellerKey
-                              : chatroomModel.buyerKey,
+                              ? chatroomModel.itemTitle
+                              : chatroomModel.itemTitle,
                           style: Theme.of(context).textTheme.subtitle1,
                           children: [
                             TextSpan(text: " "),
                             TextSpan(
                               text: "${chatroomModel.itemAddress}",
-                              style: Theme.of(context).textTheme.subtitle2,
+                              style: TextStyle(fontSize: 8),
                             )
                           ]),
                     ),
@@ -61,7 +59,7 @@ class ChatListPage extends StatelessWidget {
                       chatroomModel.lastMsg,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: TextStyle(fontSize: 10, color: Colors.grey[500])
                     ),
                   );
                 },

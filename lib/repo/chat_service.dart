@@ -25,6 +25,7 @@ class ChatService {
   }
 
   Future createNewChat(String chatroomKey, ChatModel chatModel) async {
+    logger.d(chatroomKey);
     DocumentReference<Map<String, dynamic>> documentReference =
     FirebaseFirestore.instance
         .collection(COL_CHATROOMS)
@@ -152,5 +153,9 @@ class ChatService {
     chatrooms.sort((a, b) => (a.lastMsgTime).compareTo(b.lastMsgTime));
 
     return chatrooms;
+  }
+  Future deleteCaht(String chatroomKey)async{
+    logger.d(chatroomKey);
+    await FirebaseFirestore.instance.collection(COL_CHATROOMS).doc("/GXCcU3MSWdd9afCdrWbbkVBhrZ02_1653168223294_IAFTEjcwrpgtFoMhKPGPhC4niCA3").delete();
   }
 }
